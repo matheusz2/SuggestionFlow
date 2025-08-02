@@ -8,6 +8,7 @@ import SuggestionForm from '../components/SuggestionForm';
 import ViewSwitcher from '../components/ViewSwitcher';
 import FirebaseTest from '../components/FirebaseTest';
 import OrderButtons, { type OrderType } from '../components/OrderButtons';
+import ToastContainer, { useToast } from '../components/ToastContainer';
 
 const Home: React.FC = () => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -22,6 +23,9 @@ const Home: React.FC = () => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterHighlighted, setFilterHighlighted] = useState(false);
+
+  // Toast notifications
+  const { toasts, showSuccess, showError, showInfo, removeToast } = useToast();
 
   useEffect(() => {
     const unsubscribe = subscribeToSuggestions((newSuggestions) => {
@@ -48,18 +52,20 @@ const Home: React.FC = () => {
   const totalLikes = suggestions.reduce((sum, s) => sum + s.likes, 0);
 
   const handleLike = (id: string) => {
-    // O Firebase já atualiza em tempo real, então não precisamos fazer nada aqui
-    console.log('Like dado à sugestão:', id);
+    showSuccess('Like adicionado!', 'Sua curtida foi registrada com sucesso.');
   };
 
   const handleHighlight = (id: string) => {
-    // O Firebase já atualiza em tempo real, então não precisamos fazer nada aqui
-    console.log('Destaque alterado para sugestão:', id);
+    const suggestion = suggestions.find(s => s.id === id);
+    if (suggestion?.isHighlighted) {
+      showInfo('Destaque removido', 'A sugestão não está mais destacada.');
+    } else {
+      showSuccess('Sugestão destacada!', 'A sugestão agora aparece em destaque.');
+    }
   };
 
   const handleFormSubmit = () => {
-    // O Firebase já atualiza em tempo real, então não precisamos fazer nada aqui
-    console.log('Nova sugestão enviada');
+    showSuccess('Sugestão enviada!', 'Sua sugestão foi criada com sucesso.');
   };
 
   if (loading) {
@@ -86,13 +92,6 @@ const Home: React.FC = () => {
             </div>
             
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => setShowFirebaseTest(!showFirebaseTest)}
-                className="text-sm text-gray-600 hover:text-gray-900"
-              >
-                {showFirebaseTest ? 'Ocultar' : 'Mostrar'} Teste Firebase
-              </button>
-              
               <button
                 onClick={() => setIsFormOpen(true)}
                 className="btn-primary flex items-center gap-2"
@@ -267,14 +266,17 @@ const Home: React.FC = () => {
         )}
       </div>
 
-      {/* Form Modal */}
-      <SuggestionForm
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        onSubmit={handleFormSubmit}
-      />
-    </div>
-  );
-};
+             {/* Form Modal */}
+       <SuggestionForm
+         isOpen={isFormOpen}
+         onClose={() => setIsFormOpen(false)}
+         onSubmit={handleFormSubmit}
+       />
+
+       {/* Toast Notifications */}
+       <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
+     </div>
+   );
+ };
 
 export default Home; 

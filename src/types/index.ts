@@ -1,3 +1,14 @@
+export interface Comment {
+  id: string;
+  suggestionId: string;
+  author: string;
+  content: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  likes: number;
+  likedBy: string[];
+}
+
 export interface Suggestion {
   id: string;
   title: string;
@@ -6,10 +17,12 @@ export interface Suggestion {
   createdAt: Date | string;
   updatedAt: Date | string;
   likes: number;
+  likedBy: string[]; // Array de IDs de usuários que deram like
   isHighlighted: boolean;
   status: 'pending' | 'accepted' | 'rejected';
   category?: string;
   tags?: string[];
+  commentCount: number; // Contador de comentários
 }
 
 export interface SuggestionFormData {

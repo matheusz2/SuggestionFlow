@@ -2,6 +2,8 @@ import React from 'react';
 import { Heart, Star, MessageCircle, Calendar, User } from 'lucide-react';
 import type { Suggestion } from '../types';
 import { likeSuggestion, toggleHighlight } from '../services/firebase';
+import { hasUserLiked } from '../utils/userUtils';
+import { useCommentModal } from '../contexts/CommentContext';
 
 interface SuggestionCardProps {
   suggestion: Suggestion;
@@ -9,14 +11,16 @@ interface SuggestionCardProps {
   onHighlight: (id: string) => void;
 }
 
-const SuggestionCard: React.FC<SuggestionCardProps> = ({ 
+const SuggestionCard = React.memo<SuggestionCardProps>(({ 
   suggestion, 
   onLike, 
   onHighlight 
 }) => {
+  const { openCommentModal } = useCommentModal();
+
   const handleLike = async () => {
     try {
-      await likeSuggestion(suggestion.id, suggestion.likes);
+      await likeSuggestion(suggestion.id, suggestion.likes, suggestion.likedBy);
       onLike(suggestion.id);
     } catch (error) {
       console.error('Erro ao dar like:', error);
@@ -72,8 +76,10 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
   };
 
   return (
-    <div className={`card transition-all duration-300 hover:shadow-md ${
-      suggestion.isHighlighted ? 'ring-2 ring-primary-500 bg-primary-50' : ''
+    <div className={`card transition-all duration-500 ease-in-out hover:shadow-md transform hover:-translate-y-1 ${
+      suggestion.isHighlighted 
+        ? 'ring-2 ring-primary-500 bg-gradient-to-br from-primary-50 to-white shadow-lg animate-pulse' 
+        : 'hover:shadow-lg'
     }`}>
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
@@ -94,7 +100,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
         </div>
         
         {/* Status Badge */}
-        <span className={`px-2 py-1 text-xs font-medium rounded-full border ${getStatusColor(suggestion.status)}`}>
+        <span className={`px-2 py-1 text-xs font-medium rounded-full border transition-all duration-300 ${getStatusColor(suggestion.status)}`}>
           {getStatusText(suggestion.status)}
         </span>
       </div>
@@ -110,7 +116,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
           {suggestion.tags.map((tag, index) => (
             <span
               key={index}
-              className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
+              className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full transition-colors duration-200 hover:bg-gray-200"
             >
               #{tag}
             </span>
@@ -124,34 +130,55 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
           {/* Like Button */}
           <button
             onClick={handleLike}
-            className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors duration-200"
+            className={`flex items-center gap-2 transition-all duration-300 transform hover:scale-110 ${
+              hasUserLiked(suggestion)
+                ? 'text-red-500 hover:text-red-600'
+                : 'text-gray-600 hover:text-red-500'
+            }`}
+            title={hasUserLiked(suggestion) ? 'Remover curtida' : 'Curtir esta sugestão'}
           >
-            <Heart className="w-5 h-5" />
+            <Heart className={`w-5 h-5 transition-transform duration-200 hover:scale-125 ${
+              hasUserLiked(suggestion) ? 'fill-current' : ''
+            }`} />
             <span className="text-sm font-medium">{suggestion.likes}</span>
           </button>
 
-          {/* Comment Button (placeholder) */}
-          <button className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors duration-200">
-            <MessageCircle className="w-5 h-5" />
-            <span className="text-sm font-medium">0</span>
+          {/* Comment Button */}
+          <button 
+            onClick={() => openCommentModal(suggestion.id)}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 transform hover:scale-105 ${
+              suggestion.commentCount > 0
+                ? 'bg-primary-50 text-primary-600 hover:bg-primary-100'
+                : 'bg-gray-50 text-gray-600 hover:bg-primary-50 hover:text-primary-600'
+            }`}
+            title="Ver comentários"
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span className="text-sm font-medium">{suggestion.commentCount || 0}</span>
+            {suggestion.commentCount > 0 && (
+              <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div>
+            )}
           </button>
         </div>
 
         {/* Highlight Button */}
         <button
           onClick={handleHighlight}
-          className={`flex items-center gap-2 transition-colors duration-200 ${
+          className={`flex items-center gap-2 transition-all duration-300 transform hover:scale-110 ${
             suggestion.isHighlighted
               ? 'text-primary-600 hover:text-primary-700'
               : 'text-gray-400 hover:text-primary-600'
           }`}
           title={suggestion.isHighlighted ? 'Remover destaque' : 'Destacar sugestão'}
         >
-          <Star className={`w-5 h-5 ${suggestion.isHighlighted ? 'fill-current' : ''}`} />
+          <Star className={`w-5 h-5 transition-all duration-300 ${suggestion.isHighlighted ? 'fill-current animate-bounce' : 'hover:scale-125'}`} />
         </button>
       </div>
+
     </div>
   );
-};
+});
+
+SuggestionCard.displayName = 'SuggestionCard';
 
 export default SuggestionCard; 

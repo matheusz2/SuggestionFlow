@@ -86,13 +86,10 @@ Este documento mapeia todas as tarefas necessárias para tornar o SuggestionFlow
 - [x] Status das sugestões (pendente/aceita/rejeitada)
 - [x] Filtros por status
 - [x] Contadores por status
-- [ ] Mudança de status (botões de aprovação/rejeição)
 
 ### 🎯 Performance Básica
 - [ ] Otimização de re-renders
 - [ ] Lazy loading de componentes
-- [ ] Debounce em inputs
-- [ ] Cache básico
 
 ### 🎯 Sistema de Ordenação (NOVO - COMPLETO)
 - [x] Botões de ordenação (Mais Recentes / Mais Likes)
@@ -100,6 +97,8 @@ Este documento mapeia todas as tarefas necessárias para tornar o SuggestionFlow
 - [x] Interface responsiva
 - [x] Estados ativo/inativo
 - [x] Integração com filtros existentes
+
+### Processo de Aceitas e Pendentes devem ser somente para o admin painel
 
 ---
 

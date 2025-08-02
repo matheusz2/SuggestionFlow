@@ -2,6 +2,8 @@ import React from 'react';
 import { Heart, Star, MessageCircle, Calendar, User, ThumbsUp } from 'lucide-react';
 import type { Suggestion } from '../types';
 import { likeSuggestion, toggleHighlight } from '../services/firebase';
+import { hasUserLiked } from '../utils/userUtils';
+import { useCommentModal } from '../contexts/CommentContext';
 
 interface ForumTopicProps {
   suggestion: Suggestion;
@@ -9,14 +11,16 @@ interface ForumTopicProps {
   onHighlight: (id: string) => void;
 }
 
-const ForumTopic: React.FC<ForumTopicProps> = ({ 
+const ForumTopic = React.memo<ForumTopicProps>(({ 
   suggestion, 
   onLike, 
   onHighlight 
 }) => {
+  const { openCommentModal } = useCommentModal();
+
   const handleLike = async () => {
     try {
-      await likeSuggestion(suggestion.id, suggestion.likes);
+      await likeSuggestion(suggestion.id, suggestion.likes, suggestion.likedBy);
       onLike(suggestion.id);
     } catch (error) {
       console.error('Erro ao dar like:', error);
@@ -72,8 +76,10 @@ const ForumTopic: React.FC<ForumTopicProps> = ({
   };
 
   return (
-    <div className={`bg-white border border-gray-200 rounded-lg p-6 mb-4 transition-all duration-300 hover:shadow-md ${
-      suggestion.isHighlighted ? 'ring-2 ring-primary-500 bg-primary-50' : ''
+    <div className={`bg-white border border-gray-200 rounded-lg p-6 mb-4 transition-all duration-500 ease-in-out hover:shadow-md transform hover:-translate-y-1 ${
+      suggestion.isHighlighted 
+        ? 'ring-2 ring-primary-500 bg-gradient-to-br from-primary-50 to-white shadow-lg animate-pulse' 
+        : 'hover:shadow-lg'
     }`}>
       <div className="flex gap-4">
         {/* Left Side - Stats */}
@@ -82,9 +88,16 @@ const ForumTopic: React.FC<ForumTopicProps> = ({
           <div className="text-center">
             <button
               onClick={handleLike}
-              className="flex flex-col items-center gap-1 text-gray-600 hover:text-red-500 transition-colors duration-200"
+              className={`flex flex-col items-center gap-1 transition-all duration-300 transform hover:scale-110 ${
+                hasUserLiked(suggestion)
+                  ? 'text-red-500 hover:text-red-600'
+                  : 'text-gray-600 hover:text-red-500'
+              }`}
+              title={hasUserLiked(suggestion) ? 'Remover curtida' : 'Curtir esta sugestão'}
             >
-              <ThumbsUp className="w-6 h-6" />
+              <ThumbsUp className={`w-6 h-6 transition-transform duration-200 hover:scale-125 ${
+                hasUserLiked(suggestion) ? 'fill-current' : ''
+              }`} />
               <span className="text-lg font-bold">{suggestion.likes}</span>
               <span className="text-xs text-gray-500">likes</span>
             </button>
@@ -93,14 +106,14 @@ const ForumTopic: React.FC<ForumTopicProps> = ({
           {/* Highlight Button */}
           <button
             onClick={handleHighlight}
-            className={`p-2 rounded-full transition-colors duration-200 ${
+            className={`p-2 rounded-full transition-all duration-300 transform hover:scale-110 ${
               suggestion.isHighlighted
                 ? 'text-primary-600 bg-primary-100 hover:bg-primary-200'
                 : 'text-gray-400 hover:text-primary-600 hover:bg-gray-100'
             }`}
             title={suggestion.isHighlighted ? 'Remover destaque' : 'Destacar sugestão'}
           >
-            <Star className={`w-5 h-5 ${suggestion.isHighlighted ? 'fill-current' : ''}`} />
+            <Star className={`w-5 h-5 transition-all duration-300 ${suggestion.isHighlighted ? 'fill-current animate-bounce' : 'hover:scale-125'}`} />
           </button>
         </div>
 
@@ -123,7 +136,7 @@ const ForumTopic: React.FC<ForumTopicProps> = ({
                   <span>{formatDate(suggestion.createdAt)}</span>
                 </div>
                 {suggestion.category && (
-                  <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+                  <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs transition-colors duration-200 hover:bg-gray-200">
                     {suggestion.category}
                   </span>
                 )}
@@ -131,7 +144,7 @@ const ForumTopic: React.FC<ForumTopicProps> = ({
             </div>
 
             {/* Status Badge */}
-            <span className={`px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(suggestion.status)}`}>
+            <span className={`px-3 py-1 text-sm font-medium rounded-full transition-all duration-300 ${getStatusColor(suggestion.status)}`}>
               {getStatusText(suggestion.status)}
             </span>
           </div>
@@ -161,16 +174,38 @@ const ForumTopic: React.FC<ForumTopicProps> = ({
               {/* Like Button */}
               <button
                 onClick={handleLike}
-                className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors duration-200"
+                className={`flex items-center gap-2 transition-all duration-300 transform hover:scale-110 ${
+                  hasUserLiked(suggestion)
+                    ? 'text-red-500 hover:text-red-600'
+                    : 'text-gray-600 hover:text-red-500'
+                }`}
+                title={hasUserLiked(suggestion) ? 'Remover curtida' : 'Curtir esta sugestão'}
               >
-                <Heart className="w-5 h-5" />
-                <span className="font-medium">Curtir</span>
+                <Heart className={`w-5 h-5 transition-transform duration-200 hover:scale-125 ${
+                  hasUserLiked(suggestion) ? 'fill-current' : ''
+                }`} />
+                <span className="font-medium">
+                  {hasUserLiked(suggestion) ? 'Curtido' : 'Curtir'}
+                </span>
               </button>
 
-              {/* Comment Button (placeholder) */}
-              <button className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors duration-200">
-                <MessageCircle className="w-5 h-5" />
-                <span className="font-medium">Comentar</span>
+              {/* Comment Button */}
+              <button 
+                onClick={() => openCommentModal(suggestion.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 ${
+                  suggestion.commentCount > 0
+                    ? 'bg-primary-50 text-primary-600 hover:bg-primary-100'
+                    : 'bg-gray-50 text-gray-600 hover:bg-primary-50 hover:text-primary-600'
+                }`}
+                title="Ver comentários"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span className="font-medium">
+                  Comentar ({suggestion.commentCount || 0})
+                </span>
+                {suggestion.commentCount > 0 && (
+                  <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></div>
+                )}
               </button>
             </div>
 
@@ -181,8 +216,11 @@ const ForumTopic: React.FC<ForumTopicProps> = ({
           </div>
         </div>
       </div>
+
     </div>
   );
-};
+});
+
+ForumTopic.displayName = 'ForumTopic';
 
 export default ForumTopic; 
