@@ -23,9 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Firebase config (contém credenciais sensíveis)
-src/config/firebase-config.ts
-
 # Environment variables
 .env
 .env.local

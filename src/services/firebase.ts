@@ -1,9 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, where, getDocs, increment } from 'firebase/firestore';
 import type { Suggestion, SuggestionFormData, Comment } from '../types';
-import { firebaseConfig } from '../config/firebase-config';
 import type { OrderType } from '../components/OrderButtons';
 import { getCurrentUserId } from '../utils/userUtils';
+import { firebaseConfig } from '../config/firebase-config';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
