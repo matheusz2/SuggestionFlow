@@ -1,37 +1,27 @@
 import React from 'react';
-import { Heart, Star, MessageCircle, Calendar, User, ThumbsUp } from 'lucide-react';
+import { Heart, MessageCircle, Calendar, User, ThumbsUp } from 'lucide-react';
 import type { Suggestion } from '../types';
-import { likeSuggestion, toggleHighlight } from '../services/firebase';
+import { likeSuggestion } from '../services/firebase';
 import { hasUserLiked } from '../utils/userUtils';
 import { useCommentModal } from '../contexts/CommentContext';
-import { useLikeButton, useHighlightButton } from '../utils/debounceUtils';
+import { useLikeButton } from '../utils/debounceUtils';
 
 interface ForumTopicProps {
   suggestion: Suggestion;
   onLike: (id: string) => void;
-  onHighlight: (id: string) => void;
 }
 
 const ForumTopic = React.memo<ForumTopicProps>(({ 
   suggestion, 
-  onLike, 
-  onHighlight 
+  onLike
 }) => {
   const { openCommentModal } = useCommentModal();
   const { isLikeLoading, handleLike } = useLikeButton();
-  const { isHighlightLoading, handleHighlight } = useHighlightButton();
 
   const onLikeClick = async () => {
     await handleLike(async () => {
       await likeSuggestion(suggestion.id, suggestion.likes, suggestion.likedBy);
       onLike(suggestion.id);
-    });
-  };
-
-  const onHighlightClick = async () => {
-    await handleHighlight(async () => {
-      await toggleHighlight(suggestion.id, suggestion.isHighlighted);
-      onHighlight(suggestion.id);
     });
   };
 
@@ -90,22 +80,6 @@ const ForumTopic = React.memo<ForumTopicProps>(({
               <span className="text-xs text-gray-500">likes</span>
             </button>
           </div>
-
-          {/* Highlight Button */}
-          <button
-            onClick={onHighlightClick}
-            disabled={isHighlightLoading}
-            className={`p-2 rounded-full transition-all duration-200 hover:scale-105 ${
-              suggestion.isHighlighted
-                ? 'text-blue-600 bg-blue-100 hover:bg-blue-200'
-                : 'text-gray-400 hover:text-blue-600 hover:bg-gray-100'
-            } ${isHighlightLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-            title={isHighlightLoading ? 'Processing...' : (suggestion.isHighlighted ? 'Remove highlight' : 'Highlight suggestion')}
-          >
-            <Star className={`w-5 h-5 ${
-              suggestion.isHighlighted ? 'fill-current' : ''
-            } ${isHighlightLoading ? 'animate-pulse' : ''}`} />
-          </button>
         </div>
 
         {/* Right Side - Content */}

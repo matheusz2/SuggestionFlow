@@ -1,37 +1,27 @@
 import React from 'react';
-import { Heart, MessageCircle, Star, User, Calendar } from 'lucide-react';
-import { likeSuggestion, toggleHighlight } from '../services/firebase';
+import { Heart, MessageCircle, User, Calendar } from 'lucide-react';
+import { likeSuggestion } from '../services/firebase';
 import { useCommentModal } from '../contexts/CommentContext';
 import { hasUserLiked } from '../utils/userUtils';
-import { useLikeButton, useHighlightButton } from '../utils/debounceUtils';
+import { useLikeButton } from '../utils/debounceUtils';
 import type { Suggestion } from '../types';
 
 interface SuggestionCardProps {
   suggestion: Suggestion;
   onLike: (id: string) => void;
-  onHighlight: (id: string) => void;
 }
 
 const SuggestionCard: React.FC<SuggestionCardProps> = ({ 
   suggestion, 
-  onLike, 
-  onHighlight 
+  onLike
 }) => {
   const { openCommentModal } = useCommentModal();
   const { isLikeLoading, handleLike } = useLikeButton();
-  const { isHighlightLoading, handleHighlight } = useHighlightButton();
 
   const onLikeClick = async () => {
     await handleLike(async () => {
       await likeSuggestion(suggestion.id, suggestion.likes, suggestion.likedBy);
       onLike(suggestion.id);
-    });
-  };
-
-  const onHighlightClick = async () => {
-    await handleHighlight(async () => {
-      await toggleHighlight(suggestion.id, suggestion.isHighlighted);
-      onHighlight(suggestion.id);
     });
   };
 
@@ -69,28 +59,13 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
         ? 'ring-2 ring-blue-500 bg-gradient-to-br from-blue-50 to-white shadow-xl' 
         : ''
     }`}>
-      {/* Header with Title, Status and Highlight Button */}
+      {/* Header with Title and Status */}
       <div className="flex items-start justify-between mb-3">
         <h3 className="text-lg font-semibold text-gray-800 flex-1 mr-3">
           {suggestion.title}
         </h3>
         <div className="flex items-center gap-2">
           {getStatusBadge(suggestion.status)}
-          {/* Highlight Button - Repositioned to not overlap badge */}
-          <button
-            onClick={onHighlightClick}
-            disabled={isHighlightLoading}
-            className={`p-1.5 rounded-full transition-all duration-200 ${
-              suggestion.isHighlighted
-                ? 'text-blue-600 hover:text-blue-700 bg-blue-50'
-                : 'text-gray-400 hover:text-blue-600 hover:bg-gray-50'
-            } ${isHighlightLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-            title={isHighlightLoading ? 'Processing...' : (suggestion.isHighlighted ? 'Remove highlight' : 'Highlight suggestion')}
-          >
-            <Star className={`w-4 h-4 ${
-              suggestion.isHighlighted ? 'fill-current' : ''
-            } ${isHighlightLoading ? 'animate-pulse' : ''}`} />
-          </button>
         </div>
       </div>
 

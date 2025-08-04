@@ -22,10 +22,9 @@ const Home: React.FC = () => {
   // Filters
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
-  const [filterHighlighted, setFilterHighlighted] = useState(false);
 
   // Toast notifications
-  const { toasts, showSuccess, showInfo, removeToast } = useToast();
+  const { toasts, showSuccess, removeToast } = useToast();
 
   useEffect(() => {
     const unsubscribe = subscribeToSuggestions((newSuggestions) => {
@@ -40,7 +39,6 @@ const Home: React.FC = () => {
   const filteredSuggestions = suggestions.filter(suggestion => {
     if (filterStatus !== 'all' && suggestion.status !== filterStatus) return false;
     if (filterCategory !== 'all' && suggestion.category !== filterCategory) return false;
-    if (filterHighlighted && !suggestion.isHighlighted) return false;
     return true;
   });
 
@@ -52,15 +50,6 @@ const Home: React.FC = () => {
 
   const handleLike = () => {
     showSuccess('Like added!', 'Your like has been registered successfully.');
-  };
-
-  const handleHighlight = (id: string) => {
-    const suggestion = suggestions.find(s => s.id === id);
-    if (suggestion?.isHighlighted) {
-      showInfo('Highlight removed', 'The suggestion is no longer highlighted.');
-    } else {
-      showSuccess('Suggestion highlighted!', 'The suggestion now appears highlighted.');
-    }
   };
 
   const handleFormSubmit = () => {
@@ -80,30 +69,31 @@ const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* Header - Mobile First */}
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">
+        <div className="max-w-screen-xl mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="flex items-center justify-between h-11 sm:h-14 lg:h-16">
+            <div className="flex items-center min-w-0 flex-1 pr-2">
+              <h1 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold text-gray-900 truncate leading-tight">
                 BonkPuter - SuggestionFlow
               </h1>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center flex-shrink-0">
               <button
                 onClick={() => setIsFormOpen(true)}
-                className="btn-primary flex items-center gap-2"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm lg:text-base whitespace-nowrap border-0 btn-new-highlight"
               >
-                <Plus className="w-4 h-4" />
-                New Suggestion
+                <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden xs:inline">New Suggestion</span>
+                <span className="xs:hidden font-extrabold">NEW</span>
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-screen-xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-6 lg:py-8">
         {/* Firebase Test */}
         {showFirebaseTest && (
           <div className="mb-8">
@@ -186,16 +176,6 @@ const Home: React.FC = () => {
                 <option value="other">Other</option>
               </select>
             </div>
-
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={filterHighlighted}
-                onChange={(e) => setFilterHighlighted(e.target.checked)}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
-              <span className="text-sm font-medium text-gray-700">Highlighted only</span>
-            </label>
           </div>
 
           {/* Order Buttons */}
@@ -248,14 +228,12 @@ const Home: React.FC = () => {
                   key={suggestion.id}
                   suggestion={suggestion}
                   onLike={handleLike}
-                  onHighlight={handleHighlight}
                 />
               ) : (
                 <ForumTopic
                   key={suggestion.id}
                   suggestion={suggestion}
                   onLike={handleLike}
-                  onHighlight={handleHighlight}
                 />
               )
             ))}

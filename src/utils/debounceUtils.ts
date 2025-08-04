@@ -60,23 +60,4 @@ export const useLikeButton = () => {
     isLikeLoading,
     handleLike
   };
-};
-
-/**
- * Custom hook for highlight button with specific Firebase protection
- * @returns Object with highlight loading state and debounced highlight function
- */
-export const useHighlightButton = () => {
-  const { isLoading: isHighlightLoading, debouncedFunction: debouncedHighlight } = useDebouncedClick(500);
-  
-  const handleHighlight = useCallback(async (
-    highlightFunction: () => Promise<void>
-  ) => {
-    await debouncedHighlight(highlightFunction);
-  }, [debouncedHighlight]);
-
-  return {
-    isHighlightLoading,
-    handleHighlight
-  };
 }; 
