@@ -40,22 +40,31 @@ const FirebaseTest: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Firebase Connection Test</h3>
-        <div className="flex items-center gap-2 text-gray-600">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-          Loading...
+  return (
+    <div className="p-6 bg-white rounded-xl shadow-md border border-gray-100">
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">Firebase Connection Test</h2>
+      
+      {/* Debug Environment Variables */}
+      <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+        <h3 className="text-sm font-medium text-gray-700 mb-2">Environment Variables Debug:</h3>
+        <div className="text-xs text-gray-600 space-y-1">
+          <div>API Key: {import.meta.env.VITE_FIREBASE_API_KEY ? '✅ Loaded' : '❌ Missing'}</div>
+          <div>Auth Domain: {import.meta.env.VITE_FIREBASE_AUTH_DOMAIN ? '✅ Loaded' : '❌ Missing'}</div>
+          <div>Project ID: {import.meta.env.VITE_FIREBASE_PROJECT_ID ? '✅ Loaded' : '❌ Missing'}</div>
+          <div>Storage Bucket: {import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ? '✅ Loaded' : '❌ Missing'}</div>
+          <div>Messaging Sender ID: {import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID ? '✅ Loaded' : '❌ Missing'}</div>
+          <div>App ID: {import.meta.env.VITE_FIREBASE_APP_ID ? '✅ Loaded' : '❌ Missing'}</div>
+          <div>Measurement ID: {import.meta.env.VITE_FIREBASE_MEASUREMENT_ID ? '✅ Loaded' : '❌ Missing'}</div>
         </div>
       </div>
-    );
-  }
 
-  return (
-    <div className="card">
-      <h3 className="text-lg font-semibold mb-4">Firebase Connection Test</h3>
-      
+      {loading && (
+        <div className="flex items-center justify-center p-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <span className="ml-2 text-gray-600">Testing connection...</span>
+        </div>
+      )}
+
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4">
           {error}

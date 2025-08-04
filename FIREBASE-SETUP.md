@@ -1,82 +1,84 @@
-# 🔥 Configuração do Firebase para BonkPuter - Suggestion
+# 🔥 Firebase Setup for SuggestionFlow
 
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
-1. Conta Google
-2. Acesso ao Firebase Console
+1. Google Account
+2. Access to Firebase Console
 
-## 🚀 Passo a Passo
+## 🚀 Step by Step
 
-### 1. Criar Projeto no Firebase
+### 1. Create Firebase Project
 
-1. Acesse: https://console.firebase.google.com/
-2. Clique em "Criar projeto"
-3. Digite o nome: `BonkPuter - Suggestion`
-4. Aceite os termos e continue
-5. **Desabilite** Google Analytics (opcional)
-6. Clique em "Criar projeto"
+1. Go to: https://console.firebase.google.com/
+2. Click "Create project"
+3. Enter the name: `SuggestionFlow`
+4. Accept the terms and continue
+5. **Disable** Google Analytics (optional)
+6. Click "Create project"
 
-### 2. Ativar Firestore Database
+### 2. Enable Firestore Database
 
-1. No menu lateral, clique em "Firestore Database"
-2. Clique em "Criar banco de dados"
-3. Escolha "Iniciar no modo de teste" (para desenvolvimento)
-4. Escolha a localização mais próxima (ex: `us-central1`)
-5. Clique em "Pronto"
+1. In the sidebar, click "Firestore Database"
+2. Click "Create database"
+3. Choose "Start in test mode" (for development)
+4. Choose the closest location (e.g., `us-central1`)
+5. Click "Done"
 
-### 3. Obter Credenciais
+### 3. Get Credentials
 
-1. No menu lateral, clique em ⚙️ (Configurações) > "Configurações do projeto"
-2. Na aba "Geral", role até "Seus aplicativos"
-3. Clique no ícone da web (</>) para adicionar app web
-4. Digite o nome: `BonkPuter - Suggestion Web`
-5. **NÃO** marque "Também configurar o Firebase Hosting"
-6. Clique em "Registrar app"
-7. Copie a configuração que aparece
+1. In the sidebar, click ⚙️ (Settings) > "Project settings"
+2. In the "General" tab, scroll to "Your apps"
+3. Click the web icon (</>) to add web app
+4. Enter the name: `SuggestionFlow Web`
+5. **DO NOT** check "Also set up Firebase Hosting"
+6. Click "Register app"
+7. Copy the configuration that appears
 
-### 4. Atualizar o Código
+### 4. Update the Code
 
-Substitua as credenciais no arquivo `src/services/firebase.ts`:
+Create a `.env` file in the project root and add your Firebase credentials:
 
-```javascript
-const firebaseConfig = {
-    apiKey: "sua-api-key-real",
-    authDomain: "seu-projeto.firebaseapp.com",
-    projectId: "seu-projeto-id",
-    storageBucket: "seu-projeto.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef123456"
-};
+```bash
+# Firebase Configuration
+VITE_FIREBASE_API_KEY=your_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
+VITE_FIREBASE_APP_ID=1:123456789:web:abcdef123456
+VITE_FIREBASE_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
-### 5. Configurar Regras do Firestore
+**Important:** Copy the `.env.example` file to `.env` and replace the placeholder values with your real Firebase credentials.
 
-1. No Firestore Database, clique na aba "Regras"
-2. Substitua as regras por:
+### 5. Configure Firestore Rules
+
+1. In Firestore Database, click the "Rules" tab
+2. Replace the rules with:
 
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /suggestions/{document} {
-      allow read, write: if true; // Para desenvolvimento
+      allow read, write: if true; // For development
     }
   }
 }
 ```
 
-3. Clique em "Publicar"
+3. Click "Publish"
 
-## ✅ Verificação
+## ✅ Verification
 
-1. Execute `npm run dev`
-2. Acesse http://localhost:5174/
-3. Tente adicionar uma sugestão
-4. Verifique no Firebase Console > Firestore Database se a coleção `suggestions` foi criada
+1. Run `npm run dev`
+2. Go to http://localhost:5174/
+3. Try adding a suggestion
+4. Check in Firebase Console > Firestore Database if the `suggestions` collection was created
 
-## 🔒 Segurança (Produção)
+## 🔒 Security (Production)
 
-Para produção, atualize as regras do Firestore:
+For production, update the Firestore rules:
 
 ```javascript
 rules_version = '2';
@@ -84,20 +86,20 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /suggestions/{document} {
       allow read: if true;
-      allow write: if request.auth != null; // Apenas usuários autenticados
+      allow write: if request.auth != null; // Only authenticated users
     }
   }
 }
 ```
 
-## 🆘 Solução de Problemas
+## 🆘 Troubleshooting
 
-### Erro 400 (Bad Request)
-- Verifique se as credenciais estão corretas
-- Confirme se o projeto existe no Firebase Console
+### Error 400 (Bad Request)
+- Check if the credentials are correct
+- Confirm if the project exists in Firebase Console
 
-### Erro de Permissão
-- Verifique as regras do Firestore
+### Permission Error
+- Check the Firestore rules
 - Certifique-se de que a coleção `suggestions` pode ser criada
 
 ### Dados não aparecem
