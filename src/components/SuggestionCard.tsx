@@ -1,9 +1,10 @@
 import React from 'react';
-import { Heart, Star, MessageCircle, Calendar, User } from 'lucide-react';
-import type { Suggestion } from '../types';
+import { Heart, MessageCircle, Star, User, Calendar } from 'lucide-react';
 import { likeSuggestion, toggleHighlight } from '../services/firebase';
-import { hasUserLiked } from '../utils/userUtils';
 import { useCommentModal } from '../contexts/CommentContext';
+import { hasUserLiked } from '../utils/userUtils';
+import { useLikeButton, useHighlightButton } from '../utils/debounceUtils';
+import type { Suggestion } from '../types';
 
 interface SuggestionCardProps {
   suggestion: Suggestion;
@@ -11,29 +12,27 @@ interface SuggestionCardProps {
   onHighlight: (id: string) => void;
 }
 
-const SuggestionCard = React.memo<SuggestionCardProps>(({ 
+const SuggestionCard: React.FC<SuggestionCardProps> = ({ 
   suggestion, 
   onLike, 
   onHighlight 
 }) => {
   const { openCommentModal } = useCommentModal();
+  const { isLikeLoading, handleLike } = useLikeButton();
+  const { isHighlightLoading, handleHighlight } = useHighlightButton();
 
-  const handleLike = async () => {
-    try {
+  const onLikeClick = async () => {
+    await handleLike(async () => {
       await likeSuggestion(suggestion.id, suggestion.likes, suggestion.likedBy);
       onLike(suggestion.id);
-    } catch (error) {
-      console.error('Error giving like:', error);
-    }
+    });
   };
 
-  const handleHighlight = async () => {
-    try {
+  const onHighlightClick = async () => {
+    await handleHighlight(async () => {
       await toggleHighlight(suggestion.id, suggestion.isHighlighted);
       onHighlight(suggestion.id);
-    } catch (error) {
-      console.error('Error changing highlight:', error);
-    }
+    });
   };
 
   const formatDate = (date: Date | string) => {
@@ -79,17 +78,18 @@ const SuggestionCard = React.memo<SuggestionCardProps>(({
           {getStatusBadge(suggestion.status)}
           {/* Highlight Button - Repositioned to not overlap badge */}
           <button
-            onClick={handleHighlight}
+            onClick={onHighlightClick}
+            disabled={isHighlightLoading}
             className={`p-1.5 rounded-full transition-all duration-200 ${
               suggestion.isHighlighted
                 ? 'text-blue-600 hover:text-blue-700 bg-blue-50'
                 : 'text-gray-400 hover:text-blue-600 hover:bg-gray-50'
-            }`}
-            title={suggestion.isHighlighted ? 'Remove highlight' : 'Highlight suggestion'}
+            } ${isHighlightLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            title={isHighlightLoading ? 'Processing...' : (suggestion.isHighlighted ? 'Remove highlight' : 'Highlight suggestion')}
           >
             <Star className={`w-4 h-4 ${
               suggestion.isHighlighted ? 'fill-current' : ''
-            }`} />
+            } ${isHighlightLoading ? 'animate-pulse' : ''}`} />
           </button>
         </div>
       </div>
@@ -119,17 +119,18 @@ const SuggestionCard = React.memo<SuggestionCardProps>(({
         <div className="flex items-center gap-4">
           {/* Like Button */}
           <button
-            onClick={handleLike}
+            onClick={onLikeClick}
+            disabled={isLikeLoading}
             className={`action-button ${
               hasUserLiked(suggestion)
                 ? 'text-red-500 hover:text-red-600'
                 : ''
-            }`}
-            title={hasUserLiked(suggestion) ? 'Remove like' : 'Like this suggestion'}
+            } ${isLikeLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            title={isLikeLoading ? 'Processing...' : (hasUserLiked(suggestion) ? 'Remove like' : 'Like this suggestion')}
           >
             <Heart className={`w-4 h-4 icon-button ${
               hasUserLiked(suggestion) ? 'fill-current' : ''
-            }`} />
+            } ${isLikeLoading ? 'animate-pulse' : ''}`} />
             <span className="text-sm font-medium">{suggestion.likes}</span>
           </button>
 
@@ -158,7 +159,7 @@ const SuggestionCard = React.memo<SuggestionCardProps>(({
       </div>
     </div>
   );
-});
+};
 
 SuggestionCard.displayName = 'SuggestionCard';
 

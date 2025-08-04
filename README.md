@@ -1,4 +1,4 @@
-# 🚀 SuggestionFlow
+# 🚀 BonkPuter - SuggestionFlow
 
 A collaborative real-time suggestion panel built with React, TypeScript and Firebase.
 
@@ -26,7 +26,7 @@ A collaborative real-time suggestion panel built with React, TypeScript and Fire
 1. **Clone the repository**
 ```bash
 git clone <your-repository>
-cd SuggestionFlow
+cd BonkPuter - SuggestionFlow
 ```
 
 2. **Install dependencies**
@@ -61,7 +61,7 @@ npm run dev
 1. **Create a Firebase project**
    - Go to [console.firebase.google.com](https://console.firebase.google.com/)
    - Click "Create project"
-   - Name: `SuggestionFlow`
+   - Name: `BonkPuter - SuggestionFlow`
 
 2. **Enable Firestore**
    - Side menu → "Firestore Database"

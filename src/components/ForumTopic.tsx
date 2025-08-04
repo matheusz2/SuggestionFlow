@@ -4,6 +4,7 @@ import type { Suggestion } from '../types';
 import { likeSuggestion, toggleHighlight } from '../services/firebase';
 import { hasUserLiked } from '../utils/userUtils';
 import { useCommentModal } from '../contexts/CommentContext';
+import { useLikeButton, useHighlightButton } from '../utils/debounceUtils';
 
 interface ForumTopicProps {
   suggestion: Suggestion;
@@ -17,23 +18,21 @@ const ForumTopic = React.memo<ForumTopicProps>(({
   onHighlight 
 }) => {
   const { openCommentModal } = useCommentModal();
+  const { isLikeLoading, handleLike } = useLikeButton();
+  const { isHighlightLoading, handleHighlight } = useHighlightButton();
 
-  const handleLike = async () => {
-    try {
+  const onLikeClick = async () => {
+    await handleLike(async () => {
       await likeSuggestion(suggestion.id, suggestion.likes, suggestion.likedBy);
       onLike(suggestion.id);
-    } catch (error) {
-      console.error('Error giving like:', error);
-    }
+    });
   };
 
-  const handleHighlight = async () => {
-    try {
+  const onHighlightClick = async () => {
+    await handleHighlight(async () => {
       await toggleHighlight(suggestion.id, suggestion.isHighlighted);
       onHighlight(suggestion.id);
-    } catch (error) {
-      console.error('Error changing highlight:', error);
-    }
+    });
   };
 
   const formatDate = (date: Date | string) => {
@@ -75,17 +74,18 @@ const ForumTopic = React.memo<ForumTopicProps>(({
           {/* Like Count */}
           <div className="text-center">
             <button
-              onClick={handleLike}
+              onClick={onLikeClick}
+              disabled={isLikeLoading}
               className={`flex flex-col items-center gap-1 transition-all duration-200 hover:scale-105 ${
                 hasUserLiked(suggestion)
                   ? 'text-red-500 hover:text-red-600'
                   : 'text-gray-600 hover:text-red-500'
-              }`}
-              title={hasUserLiked(suggestion) ? 'Remove like' : 'Like this suggestion'}
+              } ${isLikeLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              title={isLikeLoading ? 'Processing...' : (hasUserLiked(suggestion) ? 'Remove like' : 'Like this suggestion')}
             >
               <ThumbsUp className={`w-6 h-6 icon-button ${
                 hasUserLiked(suggestion) ? 'fill-current' : ''
-              }`} />
+              } ${isLikeLoading ? 'animate-pulse' : ''}`} />
               <span className="text-lg font-bold">{suggestion.likes}</span>
               <span className="text-xs text-gray-500">likes</span>
             </button>
@@ -93,17 +93,18 @@ const ForumTopic = React.memo<ForumTopicProps>(({
 
           {/* Highlight Button */}
           <button
-            onClick={handleHighlight}
+            onClick={onHighlightClick}
+            disabled={isHighlightLoading}
             className={`p-2 rounded-full transition-all duration-200 hover:scale-105 ${
               suggestion.isHighlighted
                 ? 'text-blue-600 bg-blue-100 hover:bg-blue-200'
                 : 'text-gray-400 hover:text-blue-600 hover:bg-gray-100'
-            }`}
-            title={suggestion.isHighlighted ? 'Remove highlight' : 'Highlight suggestion'}
+            } ${isHighlightLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            title={isHighlightLoading ? 'Processing...' : (suggestion.isHighlighted ? 'Remove highlight' : 'Highlight suggestion')}
           >
             <Star className={`w-5 h-5 ${
               suggestion.isHighlighted ? 'fill-current' : ''
-            }`} />
+            } ${isHighlightLoading ? 'animate-pulse' : ''}`} />
           </button>
         </div>
 
@@ -161,7 +162,7 @@ const ForumTopic = React.memo<ForumTopicProps>(({
             <div className="flex items-center gap-6">
               {/* Like Button */}
               <button
-                onClick={handleLike}
+                onClick={onLikeClick}
                 className={`action-button ${
                   hasUserLiked(suggestion)
                     ? 'text-red-500 hover:text-red-600'

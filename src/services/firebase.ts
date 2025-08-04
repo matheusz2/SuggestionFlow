@@ -9,6 +9,37 @@ import { getCurrentUserId } from '../utils/userUtils';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Request cache to prevent duplicate operations
+const pendingRequests = new Map<string, Promise<any>>();
+
+// Helper function to create a unique request key
+const createRequestKey = (operation: string, id: string, userId?: string) => {
+  return `${operation}:${id}:${userId || ''}`;
+};
+
+// Helper function to execute request with cache protection
+const executeWithCache = async <T>(
+  requestKey: string,
+  operation: () => Promise<T>
+): Promise<T> => {
+  // Check if there's already a pending request for this operation
+  if (pendingRequests.has(requestKey)) {
+    console.log('Request already in progress, waiting for completion:', requestKey);
+    await pendingRequests.get(requestKey);
+    return operation(); // Execute again to get the result
+  }
+
+  // Create new request promise
+  const requestPromise = operation().finally(() => {
+    pendingRequests.delete(requestKey);
+  });
+
+  // Store the promise in cache
+  pendingRequests.set(requestKey, requestPromise);
+  
+  return requestPromise;
+};
+
 // Reference to suggestions collection
 const suggestionsCollection = collection(db, 'suggestions');
 
@@ -65,54 +96,62 @@ export const deleteSuggestion = async (id: string): Promise<void> => {
 
 // Function to like a suggestion
 export const likeSuggestion = async (id: string, currentLikes: number, currentLikedBy: string[] = []): Promise<void> => {
-  try {
-    const currentUserId = getCurrentUserId();
-    const docRef = doc(db, 'suggestions', id);
-    
-    // Check if user already liked
-    const hasLiked = currentLikedBy.includes(currentUserId);
-    
-    if (hasLiked) {
-      // Remove like
-      const newLikedBy = currentLikedBy.filter(userId => userId !== currentUserId);
-      await updateDoc(docRef, {
-        likes: currentLikes - 1,
-        likedBy: newLikedBy,
-        updatedAt: serverTimestamp(),
-      });
+  const currentUserId = getCurrentUserId();
+  const requestKey = createRequestKey('like', id, currentUserId);
+  
+  return executeWithCache(requestKey, async () => {
+    try {
+      const docRef = doc(db, 'suggestions', id);
       
-      console.log('Like removed from suggestion:', id);
-    } else {
-      // Add like
-      const newLikedBy = [...currentLikedBy, currentUserId];
-      await updateDoc(docRef, {
-        likes: currentLikes + 1,
-        likedBy: newLikedBy,
-        updatedAt: serverTimestamp(),
-      });
+      // Check if user already liked
+      const hasLiked = currentLikedBy.includes(currentUserId);
       
-      console.log('Like added to suggestion:', id);
+      if (hasLiked) {
+        // Remove like
+        const newLikedBy = currentLikedBy.filter(userId => userId !== currentUserId);
+        await updateDoc(docRef, {
+          likes: currentLikes - 1,
+          likedBy: newLikedBy,
+          updatedAt: serverTimestamp(),
+        });
+        
+        console.log('Like removed from suggestion:', id);
+      } else {
+        // Add like
+        const newLikedBy = [...currentLikedBy, currentUserId];
+        await updateDoc(docRef, {
+          likes: currentLikes + 1,
+          likedBy: newLikedBy,
+          updatedAt: serverTimestamp(),
+        });
+        
+        console.log('Like added to suggestion:', id);
+      }
+    } catch (error) {
+      console.error('Error giving like:', error);
+      throw error;
     }
-  } catch (error) {
-    console.error('Error giving like:', error);
-    throw error;
-  }
+  });
 };
 
 // Function to highlight/unhighlight a suggestion
 export const toggleHighlight = async (id: string, isHighlighted: boolean): Promise<void> => {
-  try {
-    const docRef = doc(db, 'suggestions', id);
-    await updateDoc(docRef, {
-      isHighlighted: !isHighlighted,
-      updatedAt: serverTimestamp(),
-    });
-    
-    console.log('Highlight changed for suggestion:', id);
-  } catch (error) {
-    console.error('Error changing highlight:', error);
-    throw error;
-  }
+  const requestKey = createRequestKey('highlight', id);
+  
+  return executeWithCache(requestKey, async () => {
+    try {
+      const docRef = doc(db, 'suggestions', id);
+      await updateDoc(docRef, {
+        isHighlighted: !isHighlighted,
+        updatedAt: serverTimestamp(),
+      });
+      
+      console.log('Highlight changed for suggestion:', id);
+    } catch (error) {
+      console.error('Error changing highlight:', error);
+      throw error;
+    }
+  });
 };
 
 // Function to listen for real-time changes with ordering
