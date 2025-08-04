@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, Heart, Send, User, X, Smile, ArrowLeft } from 'lucide-react';
-import type { Comment, Suggestion } from '../types';
+import type { Comment } from '../types';
 import { subscribeToComments, addComment, likeComment } from '../services/firebase';
 import { hasUserLiked, getCurrentUserId } from '../utils/userUtils';
 import { useCommentModal } from '../contexts/CommentContext';
@@ -8,7 +8,6 @@ import { useCommentModal } from '../contexts/CommentContext';
 const GlobalCommentModal: React.FC = () => {
   const { isCommentModalOpen, currentSuggestionId, closeCommentModal } = useCommentModal();
   const [comments, setComments] = useState<Comment[]>([]);
-  const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);

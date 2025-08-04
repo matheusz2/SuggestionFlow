@@ -16,7 +16,7 @@ const Home: React.FC = () => {
   const [error] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('cards');
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [showFirebaseTest, setShowFirebaseTest] = useState(false);
+  const [showFirebaseTest] = useState(false);
   const [orderType, setOrderType] = useState<OrderType>('recent');
   
   // Filters
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
   const [filterHighlighted, setFilterHighlighted] = useState(false);
 
   // Toast notifications
-  const { toasts, showSuccess, showError, showInfo, removeToast } = useToast();
+  const { toasts, showSuccess, showInfo, removeToast } = useToast();
 
   useEffect(() => {
     const unsubscribe = subscribeToSuggestions((newSuggestions) => {
@@ -46,12 +46,11 @@ const Home: React.FC = () => {
 
   // Statistics
   const totalSuggestions = suggestions.length;
-  const highlightedSuggestions = suggestions.filter(s => s.isHighlighted).length;
   const pendingSuggestions = suggestions.filter(s => s.status === 'pending').length;
   const acceptedSuggestions = suggestions.filter(s => s.status === 'accepted').length;
   const totalLikes = suggestions.reduce((sum, s) => sum + s.likes, 0);
 
-  const handleLike = (id: string) => {
+  const handleLike = () => {
     showSuccess('Like added!', 'Your like has been registered successfully.');
   };
 

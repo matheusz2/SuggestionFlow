@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, Heart, Send, User, Calendar, X, Smile } from 'lucide-react';
+import { MessageCircle, Heart, Send, User, X, Smile } from 'lucide-react';
 import type { Comment } from '../types';
 import { subscribeToComments, addComment, likeComment } from '../services/firebase';
 import { hasUserLiked, getCurrentUserId } from '../utils/userUtils';
