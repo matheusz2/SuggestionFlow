@@ -1,4 +1,4 @@
-# 🔥 Configuração do Firebase para SuggestionFlow
+# 🔥 Configuração do Firebase para BonkPuter - Suggestion
 
 ## 📋 Pré-requisitos
 
@@ -11,7 +11,7 @@
 
 1. Acesse: https://console.firebase.google.com/
 2. Clique em "Criar projeto"
-3. Digite o nome: `SuggestionFlow`
+3. Digite o nome: `BonkPuter - Suggestion`
 4. Aceite os termos e continue
 5. **Desabilite** Google Analytics (opcional)
 6. Clique em "Criar projeto"
@@ -29,7 +29,7 @@
 1. No menu lateral, clique em ⚙️ (Configurações) > "Configurações do projeto"
 2. Na aba "Geral", role até "Seus aplicativos"
 3. Clique no ícone da web (</>) para adicionar app web
-4. Digite o nome: `SuggestionFlow Web`
+4. Digite o nome: `BonkPuter - Suggestion Web`
 5. **NÃO** marque "Também configurar o Firebase Hosting"
 6. Clique em "Registrar app"
 7. Copie a configuração que aparece

@@ -1,19 +1,19 @@
 # 🚀 SuggestionFlow
 
-Um painel de sugestões colaborativo em tempo real, construído com React, TypeScript e Firebase.
+A collaborative real-time suggestion panel built with React, TypeScript and Firebase.
 
-## ✨ Funcionalidades
+## ✨ Features
 
-- ✅ **Sistema de Sugestões**: Criar, visualizar e gerenciar sugestões
-- ✅ **Duas Visualizações**: Cards e Fórum
-- ✅ **Sistema de Likes**: Votação em sugestões
-- ✅ **Sistema de Destaque**: Marcar sugestões importantes
-- ✅ **Filtros Avançados**: Por status, categoria e destaque
-- ✅ **Tempo Real**: Atualizações instantâneas com Firebase
-- ✅ **Interface Moderna**: Design responsivo com TailwindCSS
-- ✅ **Estatísticas**: Dashboard com métricas em tempo real
+- ✅ **Suggestion System**: Create, view and manage suggestions
+- ✅ **Two Views**: Cards and Forum
+- ✅ **Like System**: Vote on suggestions
+- ✅ **Highlight System**: Mark important suggestions
+- ✅ **Advanced Filters**: By status, category and highlight
+- ✅ **Real-time**: Instant updates with Firebase
+- ✅ **Modern Interface**: Responsive design with TailwindCSS
+- ✅ **Statistics**: Dashboard with real-time metrics
 
-## 🛠️ Tecnologias
+## 🛠️ Technologies
 
 - **Frontend**: React 18 + TypeScript + Vite
 - **Styling**: TailwindCSS + HeadlessUI
@@ -21,172 +21,172 @@ Um painel de sugestões colaborativo em tempo real, construído com React, TypeS
 - **Icons**: Lucide React
 - **Real-time**: Firebase Realtime Database
 
-## 🚀 Instalação
+## 🚀 Installation
 
-1. **Clone o repositório**
+1. **Clone the repository**
 ```bash
-git clone <seu-repositorio>
+git clone <your-repository>
 cd SuggestionFlow
 ```
 
-2. **Instale as dependências**
+2. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. **Configure o Firebase**
-   - Crie um projeto no [Firebase Console](https://console.firebase.google.com/)
-   - Ative o Firestore Database
-   - Copie as credenciais do projeto
-   - Edite o arquivo `src/services/firebase.ts` e substitua as credenciais
+3. **Configure Firebase**
+   - Create a project in [Firebase Console](https://console.firebase.google.com/)
+   - Enable Firestore Database
+   - Copy project credentials
+   - Edit the file `src/services/firebase.ts` and replace the credentials
 
-4. **Execute o projeto**
+4. **Run the project**
 ```bash
 npm run dev
 ```
 
-## 🔧 Configuração do Firebase
+## 🔧 Firebase Configuration
 
-### Configuração Rápida:
+### Quick Setup:
 
-1. **Copie o arquivo de exemplo:**
+1. **Copy the example file:**
    ```bash
    cp src/config/firebase-config.example.ts src/config/firebase-config.ts
    ```
 
-2. **Siga o guia detalhado:** `CONFIGURAR-FIREBASE.md`
+2. **Follow the detailed guide:** `FIREBASE-SETUP.md`
 
-### Ou configure manualmente:
+### Or configure manually:
 
-1. **Crie um projeto Firebase**
-   - Acesse [console.firebase.google.com](https://console.firebase.google.com/)
-   - Clique em "Criar projeto"
-   - Nome: `SuggestionFlow`
+1. **Create a Firebase project**
+   - Go to [console.firebase.google.com](https://console.firebase.google.com/)
+   - Click "Create project"
+   - Name: `SuggestionFlow`
 
-2. **Ative o Firestore**
-   - Menu lateral → "Firestore Database"
-   - Clique em "Criar banco de dados"
-   - Escolha "Modo de teste" (para desenvolvimento)
+2. **Enable Firestore**
+   - Side menu → "Firestore Database"
+   - Click "Create database"
+   - Choose "Test mode" (for development)
 
-3. **Obtenha as credenciais**
-   - Menu lateral → ⚙️ "Configurações do projeto"
-   - Aba "Geral" → "Seus aplicativos"
-   - Clique no ícone web (</>) para adicionar app
-   - Copie a configuração
+3. **Get credentials**
+   - Side menu → ⚙️ "Project settings"
+   - "General" tab → "Your apps"
+   - Click the web icon (</>) to add app
+   - Copy the configuration
 
-4. **Configure o arquivo**
-   - Edite `src/config/firebase-config.ts`
-   - Substitua as credenciais de exemplo pelas reais
+4. **Configure the file**
+   - Edit `src/config/firebase-config.ts`
+   - Replace example credentials with real ones
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
 src/
-├── components/          # Componentes React
+├── components/          # React Components
 │   ├── SuggestionCard.tsx
 │   ├── ForumTopic.tsx
 │   ├── SuggestionForm.tsx
 │   ├── ViewSwitcher.tsx
 │   └── FirebaseTest.tsx
-├── pages/              # Páginas da aplicação
+├── pages/              # Application Pages
 │   └── Home.tsx
-├── services/           # Serviços e APIs
+├── services/           # Services and APIs
 │   └── firebase.ts
-├── types/              # Tipos TypeScript
+├── types/              # TypeScript Types
 │   └── index.ts
 ├── App.tsx
 └── index.css
 ```
 
-## 🎯 Como Usar
+## �� How to Use
 
-### 1. **Criar uma Sugestão**
-- Clique no botão "Nova Sugestão"
-- Preencha o formulário com título, descrição e seu nome
-- Adicione categoria e tags (opcional)
-- Clique em "Enviar Sugestão"
+### 1. **Create a Suggestion**
+- Click the "New Suggestion" button
+- Fill in the form with title, description and your name
+- Add category and tags (optional)
+- Click "Submit Suggestion"
 
-### 2. **Visualizar Sugestões**
-- **Modo Cards**: Visualização em grid de cards
-- **Modo Fórum**: Visualização em lista estilo fórum
-- Use o seletor no canto superior direito para alternar
+### 2. **View Suggestions**
+- **Card View**: Grid view of cards
+- **Forum View**: List view similar to a forum
+- Use the switcher in the top right corner to toggle
 
-### 3. **Interagir com Sugestões**
-- **Like**: Clique no coração para curtir
-- **Destaque**: Clique na estrela para destacar/desdestacar
-- **Filtros**: Use os filtros para encontrar sugestões específicas
+### 3. **Interact with Suggestions**
+- **Like**: Click the heart to like
+- **Highlight**: Click the star to highlight/unhighlight
+- **Filters**: Use filters to find specific suggestions
 
-### 4. **Filtros Disponíveis**
-- **Status**: Pendente, Aceita, Rejeitada
-- **Categoria**: Melhoria, Bug, Feature, Design, Performance, Outro
-- **Destaque**: Apenas sugestões destacadas
+### 4. **Available Filters**
+- **Status**: Pending, Accepted, Rejected
+- **Category**: Improvement, Bug, Feature, Design, Performance, Other
+- **Highlight**: Only highlighted suggestions
 
-## 🔄 Sprints Implementados
+## 🔄 Implemented Sprints
 
 ### ✅ Sprint 1 - FUNDAÇÃO (COMPLETO)
-- [x] Setup do projeto React + TypeScript + Vite
-- [x] Configuração do TailwindCSS
-- [x] Componente principal App.tsx
-- [x] Página Home.tsx
-- [x] Estrutura de pastas organizada
-- [x] Configuração do Firebase
-- [x] Serviço de conexão com Firestore
-- [x] Funções CRUD básicas
-- [x] Sistema de logs detalhado
-- [x] Formulário de envio de sugestões
-- [x] Listagem de sugestões
-- [x] Sistema de likes
-- [x] Sistema de destaque
-- [x] Duas visualizações (cards/fórum)
-- [x] Todos os componentes principais
-- [x] Design responsivo
-- [x] Interface moderna
-- [x] Animações básicas
-- [x] Cores e tipografia
-- [x] Todos os arquivos .tsx
-- [x] Tipos TypeScript definidos
+- [x] Setup of React + TypeScript + Vite project
+- [x] TailwindCSS configuration
+- [x] Main App.tsx component
+- [x] Home.tsx page
+- [x] Organized folder structure
+- [x] Firebase configuration
+- [x] Firebase connection service
+- [x] Basic CRUD functions
+- [x] Detailed logging system
+- [x] Suggestion submission form
+- [x] Suggestion listing
+- [x] Like system
+- [x] Highlight system
+- [x] Two views (cards/forum)
+- [x] All main components
+- [x] Responsive design
+- [x] Modern interface
+- [x] Basic animations
+- [x] Colors and typography
+- [x] All .tsx files
+- [x] TypeScript types defined
 
-## 🚧 Próximos Sprints
+## 🚧 Next Sprints
 
-### 🔄 Sprint 2 - FUNCIONALIDADES ESSENCIAIS
-- [ ] Melhorar visual do destaque
-- [ ] Filtro por sugestões destacadas
-- [ ] Contador de sugestões destacadas
-- [ ] Animação de destaque
-- [ ] Loading states mais elegantes
-- [ ] Feedback de sucesso/erro melhorado
-- [ ] Tooltips informativos
-- [ ] Confirmações de ações
-- [ ] Sistema de status completo
-- [ ] Performance básica
+### 🔄 Sprint 2 - ESSENTIAL FUNCTIONALITIES
+- [ ] Improve highlight visual
+- [ ] Filter by highlighted suggestions
+- [ ] Counter for highlighted suggestions
+- [ ] Highlight animation
+- [ ] More elegant loading states
+- [ ] Better success/error feedback
+- [ ] Informative tooltips
+- [ ] Confirmation of actions
+- [ ] Complete status system
+- [ ] Basic performance
 
-### ⏳ Sprint 3 - ADMINISTRAÇÃO E CONTROLE
-- [ ] Painel administrativo
-- [ ] Modo admin com senha
-- [ ] Dashboard de métricas
-- [ ] Controle de destaque
-- [ ] Moderação de sugestões
+### ⏳ Sprint 3 - ADMINISTRATION AND CONTROL
+- [ ] Admin panel
+- [ ] Admin mode with password
+- [ ] Dashboard with metrics
+- [ ] Highlight control
+- [ ] Suggestion moderation
 
-## 🐛 Solução de Problemas
+## 🐛 Troubleshooting
 
-### Erro de Conexão Firebase
-1. Verifique se as credenciais estão corretas
-2. Confirme se o Firestore está ativado
-3. Verifique as regras de segurança do Firestore
+### Firebase Connection Error
+1. Check if credentials are correct
+2. Confirm Firestore is enabled
+3. Check Firestore security rules
 
-### Problemas de Build
+### Build Problems
 ```bash
 npm run build
 ```
 
-### Limpar Cache
+### Clear Cache
 ```bash
 npm run dev -- --force
 ```
 
-## 📝 Regras do Firestore
+## 📝 Firestore Rules
 
-Para desenvolvimento, use estas regras básicas:
+For development, use these basic rules:
 
 ```javascript
 rules_version = '2';
@@ -199,30 +199,30 @@ service cloud.firestore {
 }
 ```
 
-**⚠️ IMPORTANTE**: Estas regras permitem acesso total. Para produção, configure regras de segurança apropriadas.
+**⚠️ IMPORTANT**: These rules allow full access. For production, configure appropriate security rules.
 
-## 🤝 Contribuição
+## 🤝 Contributing
 
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+1. Fork the project
+2. Create a branch for your feature (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📄 Licença
+## 📄 License
 
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+This project is under the MIT license. See the `LICENSE` file for more details.
 
-## 🆘 Suporte
+## 🆘 Support
 
-Se você encontrar algum problema ou tiver dúvidas:
+If you encounter any problems or have questions:
 
-1. Verifique a seção de solução de problemas
-2. Abra uma issue no GitHub
-3. Entre em contato com a equipe de desenvolvimento
+1. Check the troubleshooting section
+2. Open an issue on GitHub
+3. Contact the development team
 
 ---
 
-**🎯 Objetivo**: Transformar o SuggestionFlow em uma plataforma completa e robusta para gestão de sugestões colaborativas.
+**🎯 Objective**: Transform the BonkPuter - Suggestion into a complete and robust platform for collaborative suggestion management.
 
-**📅 Status**: Sprint 1 completo - Funcionalidades básicas implementadas e funcionando!
+**📅 Status**: Sprint 1 complete - Basic functionalities implemented and working!

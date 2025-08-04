@@ -1,67 +1,45 @@
 import React, { useState, useCallback } from 'react';
-import Toast, { type ToastType } from './Toast';
+import Toast, { type ToastType, type Toast as ToastInterface } from './Toast';
 
-export interface ToastData {
-  id: string;
-  type: ToastType;
-  title: string;
-  message?: string;
-  duration?: number;
-}
-
-interface ToastContainerProps {
-  toasts: ToastData[];
+export interface ToastContainerProps {
+  toasts: ToastInterface[];
   onRemoveToast: (id: string) => void;
 }
 
-const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemoveToast }) => {
-  return (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
-      {toasts.map((toast, index) => (
-        <div
-          key={toast.id}
-          className="transform transition-all duration-300 ease-in-out"
-          style={{
-            transform: `translateY(${index * 80}px)`,
-          }}
-        >
-          <Toast
-            id={toast.id}
-            type={toast.type}
-            title={toast.title}
-            message={toast.message}
-            duration={toast.duration}
-            onClose={onRemoveToast}
-          />
-        </div>
-      ))}
-    </div>
-  );
-};
-
-// Hook para gerenciar toasts
 export const useToast = () => {
-  const [toasts, setToasts] = useState<ToastData[]>([]);
+  const [toasts, setToasts] = useState<ToastInterface[]>([]);
 
-  const addToast = useCallback((toast: Omit<ToastData, 'id'>) => {
-    const id = Date.now().toString();
-    setToasts(prev => [...prev, { ...toast, id }]);
+  const addToast = useCallback((type: ToastType, title: string, message: string, duration?: number) => {
+    const id = Math.random().toString(36).substr(2, 9);
+    const newToast: ToastInterface = {
+      id,
+      type,
+      title,
+      message,
+      duration
+    };
+    
+    setToasts(prev => [...prev, newToast]);
   }, []);
 
   const removeToast = useCallback((id: string) => {
     setToasts(prev => prev.filter(toast => toast.id !== id));
   }, []);
 
-  const showSuccess = useCallback((title: string, message?: string) => {
-    addToast({ type: 'success', title, message });
+  const showSuccess = useCallback((title: string, message: string, duration?: number) => {
+    addToast('success', title, message, duration);
   }, [addToast]);
 
-  const showError = useCallback((title: string, message?: string) => {
-    addToast({ type: 'error', title, message });
+  const showError = useCallback((title: string, message: string, duration?: number) => {
+    addToast('error', title, message, duration);
   }, [addToast]);
 
-  const showInfo = useCallback((title: string, message?: string) => {
-    addToast({ type: 'info', title, message });
+  const showInfo = useCallback((title: string, message: string, duration?: number) => {
+    addToast('info', title, message, duration);
+  }, [addToast]);
+
+  const showWarning = useCallback((title: string, message: string, duration?: number) => {
+    addToast('warning', title, message, duration);
   }, [addToast]);
 
   return {
@@ -69,8 +47,25 @@ export const useToast = () => {
     showSuccess,
     showError,
     showInfo,
-    removeToast,
+    showWarning,
+    removeToast
   };
+};
+
+const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemoveToast }) => {
+  if (toasts.length === 0) return null;
+
+  return (
+    <div className="fixed top-4 right-4 z-50 space-y-2">
+      {toasts.map((toast) => (
+        <Toast
+          key={toast.id}
+          toast={toast}
+          onRemove={onRemoveToast}
+        />
+      ))}
+    </div>
+  );
 };
 
 export default ToastContainer; 

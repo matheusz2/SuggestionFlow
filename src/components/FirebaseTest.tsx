@@ -14,37 +14,39 @@ const FirebaseTest: React.FC = () => {
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   const testConnection = async () => {
-    setTestResult('Testando conexão...');
+    setTestResult('Testing connection...');
     
     try {
       const testSuggestion = {
-        title: 'Teste de Conexão',
-        description: 'Esta é uma sugestão de teste para verificar a conexão com o Firebase.',
-        author: 'Sistema',
-        category: 'teste',
-        tags: ['teste', 'conexão']
+        title: 'Connection Test',
+        description: 'This is a test suggestion to verify the Firebase connection.',
+        author: 'System',
+        category: 'test',
+        tags: ['test', 'connection']
       };
 
       await addSuggestion(testSuggestion);
-      setTestResult('✅ Conexão com Firebase funcionando! Sugestão de teste criada.');
+      setTestResult('✅ Firebase connection working! Test suggestion created.');
     } catch (error) {
-      console.error('Erro no teste:', error);
-      setTestResult('❌ Erro na conexão com Firebase. Verifique as credenciais.');
-      setError('Erro na conexão com Firebase');
+      console.error('Test error:', error);
+      setTestResult('❌ Error connecting to Firebase. Check credentials.');
+      setError('Firebase connection error');
     }
   };
 
   if (loading) {
     return (
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Teste de Conexão Firebase</h3>
+        <h3 className="text-lg font-semibold mb-4">Firebase Connection Test</h3>
         <div className="flex items-center gap-2 text-gray-600">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600"></div>
-          Carregando...
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+          Loading...
         </div>
       </div>
     );
@@ -52,10 +54,10 @@ const FirebaseTest: React.FC = () => {
 
   return (
     <div className="card">
-      <h3 className="text-lg font-semibold mb-4">Teste de Conexão Firebase</h3>
+      <h3 className="text-lg font-semibold mb-4">Firebase Connection Test</h3>
       
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4">
           {error}
         </div>
       )}
@@ -65,28 +67,28 @@ const FirebaseTest: React.FC = () => {
           onClick={testConnection}
           className="btn-primary"
         >
-          Testar Conexão
+          Test Connection
         </button>
 
         {testResult && (
-          <div className="p-3 bg-gray-50 rounded-lg">
+          <div className="p-3 bg-gray-50 rounded-xl">
             <p className="text-sm">{testResult}</p>
           </div>
         )}
 
-        <div className="border-t pt-4">
-          <h4 className="font-medium mb-2">Sugestões no Banco ({suggestions.length})</h4>
+        <div className="border-t border-gray-100 pt-4">
+          <h4 className="font-medium mb-2">Suggestions in Database ({suggestions.length})</h4>
           {suggestions.length === 0 ? (
-            <p className="text-gray-500 text-sm">Nenhuma sugestão encontrada.</p>
+            <p className="text-gray-500 text-sm">No suggestions found.</p>
           ) : (
             <div className="space-y-2 max-h-40 overflow-y-auto">
               {suggestions.slice(0, 5).map((suggestion) => (
-                <div key={suggestion.id} className="text-sm p-2 bg-gray-50 rounded">
+                <div key={suggestion.id} className="text-sm p-2 bg-gray-50 rounded-lg">
                   <strong>{suggestion.title}</strong> - {suggestion.author}
                 </div>
               ))}
               {suggestions.length > 5 && (
-                <p className="text-xs text-gray-500">... e mais {suggestions.length - 5} sugestões</p>
+                <p className="text-xs text-gray-500">... and {suggestions.length - 5} more suggestions</p>
               )}
             </div>
           )}

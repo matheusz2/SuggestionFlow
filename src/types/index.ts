@@ -17,12 +17,12 @@ export interface Suggestion {
   createdAt: Date | string;
   updatedAt: Date | string;
   likes: number;
-  likedBy: string[]; // Array de IDs de usuários que deram like
+  likedBy: string[]; // Array of user IDs who liked
   isHighlighted: boolean;
   status: 'pending' | 'accepted' | 'rejected';
   category?: string;
   tags?: string[];
-  commentCount: number; // Contador de comentários
+  commentCount: number; // Comment counter
 }
 
 export interface SuggestionFormData {

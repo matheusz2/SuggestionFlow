@@ -4,7 +4,7 @@
 
 ### 🎯 Objetivos da Sprint 2
 
-Esta sprint foca em melhorar a experiência do usuário e adicionar funcionalidades essenciais que tornam o SuggestionFlow mais robusto e profissional.
+Esta sprint foca em melhorar a experiência do usuário e adicionar funcionalidades essenciais que tornam o BonkPuter - Suggestion mais robusto e profissional.
 
 ## ✅ Tarefas da Sprint 2
 
@@ -227,7 +227,7 @@ Esta sprint foca em melhorar a experiência do usuário e adicionar funcionalida
 
 ---
 
-**🎯 Objetivo da Sprint 2**: Transformar o SuggestionFlow em uma aplicação mais profissional, com melhor UX/UI e funcionalidades essenciais implementadas.
+**🎯 Objetivo da Sprint 2**: Transformar o BonkPuter - Suggestion em uma aplicação mais profissional, com melhor UX/UI e funcionalidades essenciais implementadas.
 
 **📅 Duração Estimada**: 2-3 semanas
 **👥 Responsável**: Desenvolvedor Full-Stack 

@@ -9,15 +9,15 @@ interface ViewSwitcherProps {
 
 const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ viewMode, onViewChange }) => {
   return (
-    <div className="flex items-center bg-gray-100 rounded-lg p-1">
+    <div className="flex items-center bg-gray-100 rounded-xl p-1">
       <button
         onClick={() => onViewChange('cards')}
-        className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-200 ${
+        className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
           viewMode === 'cards'
-            ? 'bg-white text-primary-600 shadow-sm'
+            ? 'bg-white text-blue-600 shadow-sm'
             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
         }`}
-        title="Visualização em Cards"
+        title="Card View"
       >
         <Grid className="w-4 h-4" />
         <span className="text-sm font-medium">Cards</span>
@@ -25,15 +25,15 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ viewMode, onViewChange }) =
       
       <button
         onClick={() => onViewChange('forum')}
-        className={`flex items-center gap-2 px-3 py-2 rounded-md transition-all duration-200 ${
+        className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
           viewMode === 'forum'
-            ? 'bg-white text-primary-600 shadow-sm'
+            ? 'bg-white text-blue-600 shadow-sm'
             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
         }`}
-        title="Visualização em Fórum"
+        title="Forum View"
       >
         <List className="w-4 h-4" />
-        <span className="text-sm font-medium">Fórum</span>
+        <span className="text-sm font-medium">Forum</span>
       </button>
     </div>
   );

@@ -1,26 +1,26 @@
-// Utilitário para gerenciar o ID do usuário
+// Utility to manage user ID
 class UserManager {
   private userId: string | null = null;
 
-  // Obter ou criar ID do usuário
+  // Get or create user ID
   getUserId(): string {
     if (!this.userId) {
-      // Tentar recuperar do localStorage
-      const storedUserId = localStorage.getItem('suggestionflow_user_id');
+      // Try to recover from localStorage
+      const storedUserId = localStorage.getItem('SuggestionFlow_user_id');
       
       if (storedUserId) {
         this.userId = storedUserId;
       } else {
-        // Criar novo ID
+        // Create new ID
         this.userId = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-        localStorage.setItem('suggestionflow_user_id', this.userId);
+        localStorage.setItem('SuggestionFlow_user_id', this.userId);
       }
     }
     
     return this.userId;
   }
 
-  // Verificar se o usuário deu like em uma sugestão
+  // Check if user liked a suggestion
   hasLiked(suggestion: { likedBy?: string[] }): boolean {
     if (!suggestion.likedBy || suggestion.likedBy.length === 0) {
       return false;
@@ -29,22 +29,22 @@ class UserManager {
     return suggestion.likedBy.includes(this.getUserId());
   }
 
-  // Limpar ID do usuário (para logout)
+  // Clear user ID (for logout)
   clearUserId(): void {
     this.userId = null;
-    localStorage.removeItem('suggestionflow_user_id');
+    localStorage.removeItem('SuggestionFlow_user_id');
   }
 }
 
-// Instância singleton
+// Singleton instance
 export const userManager = new UserManager();
 
-// Função helper para verificar se o usuário atual deu like
+// Helper function to check if current user liked
 export const hasUserLiked = (suggestion: { likedBy?: string[] }): boolean => {
   return userManager.hasLiked(suggestion);
 };
 
-// Função helper para obter ID do usuário
+// Helper function to get user ID
 export const getCurrentUserId = (): string => {
   return userManager.getUserId();
 }; 

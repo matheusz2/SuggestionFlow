@@ -5,14 +5,14 @@ import { firebaseConfig } from '../config/firebase-config';
 import type { OrderType } from '../components/OrderButtons';
 import { getCurrentUserId } from '../utils/userUtils';
 
-// Inicializar Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Referência para a coleção de sugestões
+// Reference to suggestions collection
 const suggestionsCollection = collection(db, 'suggestions');
 
-// Função para adicionar uma nova sugestão
+// Function to add a new suggestion
 export const addSuggestion = async (suggestionData: SuggestionFormData): Promise<string> => {
   try {
     const docRef = await addDoc(suggestionsCollection, {
@@ -26,15 +26,15 @@ export const addSuggestion = async (suggestionData: SuggestionFormData): Promise
       updatedAt: serverTimestamp(),
     });
     
-    console.log('Sugestão adicionada com ID:', docRef.id);
+    console.log('Suggestion added with ID:', docRef.id);
     return docRef.id;
   } catch (error) {
-    console.error('Erro ao adicionar sugestão:', error);
+    console.error('Error adding suggestion:', error);
     throw error;
   }
 };
 
-// Função para atualizar uma sugestão
+// Function to update a suggestion
 export const updateSuggestion = async (id: string, updates: Partial<Suggestion>): Promise<void> => {
   try {
     const docRef = doc(db, 'suggestions', id);
@@ -43,39 +43,37 @@ export const updateSuggestion = async (id: string, updates: Partial<Suggestion>)
       updatedAt: serverTimestamp(),
     });
     
-    console.log('Sugestão atualizada:', id);
+    console.log('Suggestion updated:', id);
   } catch (error) {
-    console.error('Erro ao atualizar sugestão:', error);
+    console.error('Error updating suggestion:', error);
     throw error;
   }
 };
 
-// Função para deletar uma sugestão
+// Function to delete a suggestion
 export const deleteSuggestion = async (id: string): Promise<void> => {
   try {
     const docRef = doc(db, 'suggestions', id);
     await deleteDoc(docRef);
     
-    console.log('Sugestão deletada:', id);
+    console.log('Suggestion deleted:', id);
   } catch (error) {
-    console.error('Erro ao deletar sugestão:', error);
+    console.error('Error deleting suggestion:', error);
     throw error;
   }
 };
 
-
-
-// Função para dar like em uma sugestão
+// Function to like a suggestion
 export const likeSuggestion = async (id: string, currentLikes: number, currentLikedBy: string[] = []): Promise<void> => {
   try {
     const currentUserId = getCurrentUserId();
     const docRef = doc(db, 'suggestions', id);
     
-    // Verificar se o usuário já deu like
+    // Check if user already liked
     const hasLiked = currentLikedBy.includes(currentUserId);
     
     if (hasLiked) {
-      // Remover like
+      // Remove like
       const newLikedBy = currentLikedBy.filter(userId => userId !== currentUserId);
       await updateDoc(docRef, {
         likes: currentLikes - 1,
@@ -83,9 +81,9 @@ export const likeSuggestion = async (id: string, currentLikes: number, currentLi
         updatedAt: serverTimestamp(),
       });
       
-      console.log('Like removido da sugestão:', id);
+      console.log('Like removed from suggestion:', id);
     } else {
-      // Adicionar like
+      // Add like
       const newLikedBy = [...currentLikedBy, currentUserId];
       await updateDoc(docRef, {
         likes: currentLikes + 1,
@@ -93,15 +91,15 @@ export const likeSuggestion = async (id: string, currentLikes: number, currentLi
         updatedAt: serverTimestamp(),
       });
       
-      console.log('Like adicionado à sugestão:', id);
+      console.log('Like added to suggestion:', id);
     }
   } catch (error) {
-    console.error('Erro ao dar like:', error);
+    console.error('Error giving like:', error);
     throw error;
   }
 };
 
-// Função para destacar/desdestacar uma sugestão
+// Function to highlight/unhighlight a suggestion
 export const toggleHighlight = async (id: string, isHighlighted: boolean): Promise<void> => {
   try {
     const docRef = doc(db, 'suggestions', id);
@@ -110,14 +108,14 @@ export const toggleHighlight = async (id: string, isHighlighted: boolean): Promi
       updatedAt: serverTimestamp(),
     });
     
-    console.log('Destaque alterado para sugestão:', id);
+    console.log('Highlight changed for suggestion:', id);
   } catch (error) {
-    console.error('Erro ao alterar destaque:', error);
+    console.error('Error changing highlight:', error);
     throw error;
   }
 };
 
-// Função para escutar mudanças em tempo real com ordenação
+// Function to listen for real-time changes with ordering
 export const subscribeToSuggestions = (
   callback: (suggestions: Suggestion[]) => void,
   orderType: OrderType = 'recent'
@@ -125,14 +123,14 @@ export const subscribeToSuggestions = (
   let q;
   
   if (orderType === 'likes') {
-    // Ordenar por likes (decrescente) e depois por data (decrescente)
+    // Sort by likes (descending) and then by date (descending)
     q = query(
       suggestionsCollection, 
       orderBy('likes', 'desc'),
       orderBy('createdAt', 'desc')
     );
   } else {
-    // Ordenar por data de criação (decrescente) - padrão
+    // Sort by creation date (descending) - default
     q = query(suggestionsCollection, orderBy('createdAt', 'desc'));
   }
   
@@ -161,10 +159,10 @@ export const subscribeToSuggestions = (
   });
 };
 
-// Referência para a coleção de comentários
+// Reference to comments collection
 const commentsCollection = collection(db, 'comments');
 
-// Função para adicionar um comentário
+// Function to add a comment
 export const addComment = async (suggestionId: string, content: string, author: string): Promise<string> => {
   try {
     const docRef = await addDoc(commentsCollection, {
@@ -177,22 +175,22 @@ export const addComment = async (suggestionId: string, content: string, author: 
       updatedAt: serverTimestamp(),
     });
     
-    // Atualizar contador de comentários na sugestão
+    // Update comment count in the suggestion
     const suggestionRef = doc(db, 'suggestions', suggestionId);
     await updateDoc(suggestionRef, {
       commentCount: increment(1),
       updatedAt: serverTimestamp(),
     });
     
-    console.log('Comentário adicionado com ID:', docRef.id);
+    console.log('Comment added with ID:', docRef.id);
     return docRef.id;
   } catch (error) {
-    console.error('Erro ao adicionar comentário:', error);
+    console.error('Error adding comment:', error);
     throw error;
   }
 };
 
-// Função para obter comentários de uma sugestão
+// Function to get comments for a suggestion
 export const getComments = async (suggestionId: string): Promise<Comment[]> => {
   try {
     const q = query(
@@ -219,12 +217,12 @@ export const getComments = async (suggestionId: string): Promise<Comment[]> => {
 
     return comments;
   } catch (error) {
-    console.error('Erro ao obter comentários:', error);
+    console.error('Error getting comments:', error);
     throw error;
   }
 };
 
-// Função para escutar comentários em tempo real
+// Function to listen for real-time comments
 export const subscribeToComments = (
   suggestionId: string,
   callback: (comments: Comment[]) => void
@@ -253,25 +251,25 @@ export const subscribeToComments = (
       
       callback(comments);
     }, (error) => {
-      console.error('Erro no subscribeToComments:', error);
+      console.error('Error in subscribeToComments:', error);
     });
   } catch (error) {
-    console.error('Erro ao criar query:', error);
+    console.error('Error creating query:', error);
     callback([]);
   }
 };
 
-// Função para dar like em um comentário
+// Function to like a comment
 export const likeComment = async (commentId: string, currentLikes: number, currentLikedBy: string[] = []): Promise<void> => {
   try {
     const currentUserId = getCurrentUserId();
     const docRef = doc(db, 'comments', commentId);
     
-    // Verificar se o usuário já deu like
+    // Check if user already liked
     const hasLiked = currentLikedBy.includes(currentUserId);
     
     if (hasLiked) {
-      // Remover like
+      // Remove like
       const newLikedBy = currentLikedBy.filter(userId => userId !== currentUserId);
       await updateDoc(docRef, {
         likes: currentLikes - 1,
@@ -279,9 +277,9 @@ export const likeComment = async (commentId: string, currentLikes: number, curre
         updatedAt: serverTimestamp(),
       });
       
-      console.log('Like removido do comentário:', commentId);
+      console.log('Like removed from comment:', commentId);
     } else {
-      // Adicionar like
+      // Add like
       const newLikedBy = [...currentLikedBy, currentUserId];
       await updateDoc(docRef, {
         likes: currentLikes + 1,
@@ -289,30 +287,30 @@ export const likeComment = async (commentId: string, currentLikes: number, curre
         updatedAt: serverTimestamp(),
       });
       
-      console.log('Like adicionado ao comentário:', commentId);
+      console.log('Like added to comment:', commentId);
     }
   } catch (error) {
-    console.error('Erro ao dar like no comentário:', error);
+    console.error('Error giving like to comment:', error);
     throw error;
   }
 };
 
-// Função para deletar um comentário
+// Function to delete a comment
 export const deleteComment = async (commentId: string, suggestionId: string): Promise<void> => {
   try {
     const docRef = doc(db, 'comments', commentId);
     await deleteDoc(docRef);
     
-    // Atualizar contador de comentários na sugestão
+    // Update comment count in the suggestion
     const suggestionRef = doc(db, 'suggestions', suggestionId);
     await updateDoc(suggestionRef, {
       commentCount: increment(-1),
       updatedAt: serverTimestamp(),
     });
     
-    console.log('Comentário deletado:', commentId);
+    console.log('Comment deleted:', commentId);
   } catch (error) {
-    console.error('Erro ao deletar comentário:', error);
+    console.error('Error deleting comment:', error);
     throw error;
   }
 };

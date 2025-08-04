@@ -58,7 +58,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
     e.preventDefault();
     
     if (!formData.title.trim() || !formData.description.trim() || !formData.author.trim()) {
-      setError('Por favor, preencha todos os campos obrigatórios.');
+      setError('Please fill in all required fields.');
       return;
     }
 
@@ -80,8 +80,8 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
       onSubmit();
       onClose();
     } catch (error) {
-      console.error('Erro ao enviar sugestão:', error);
-      setError('Erro ao enviar sugestão. Tente novamente.');
+      console.error('Error sending suggestion:', error);
+      setError('Error sending suggestion. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -91,15 +91,15 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">
-            Nova Sugestão
+        <div className="flex items-center justify-between p-6 border-b border-gray-100">
+          <h2 className="text-xl font-semibold text-gray-800">
+            New Suggestion
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            className="text-gray-400 hover:text-gray-600 transition-colors duration-200 p-1 rounded-lg hover:bg-gray-100"
           >
             <X className="w-6 h-6" />
           </button>
@@ -108,7 +108,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl">
               {error}
             </div>
           )}
@@ -116,7 +116,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
           {/* Title */}
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-              Título *
+              Title *
             </label>
             <input
               type="text"
@@ -125,7 +125,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
               value={formData.title}
               onChange={handleInputChange}
               className="input-field"
-              placeholder="Digite o título da sua sugestão"
+              placeholder="Enter your suggestion title"
               required
             />
           </div>
@@ -133,7 +133,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
           {/* Description */}
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-              Descrição *
+              Description *
             </label>
             <textarea
               id="description"
@@ -142,7 +142,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
               onChange={handleInputChange}
               rows={4}
               className="input-field resize-none"
-              placeholder="Descreva sua sugestão em detalhes..."
+              placeholder="Describe your suggestion in detail..."
               required
             />
           </div>
@@ -150,7 +150,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
           {/* Author */}
           <div>
             <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
-              Seu Nome *
+              Your Name *
             </label>
             <input
               type="text"
@@ -159,7 +159,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
               value={formData.author}
               onChange={handleInputChange}
               className="input-field"
-              placeholder="Digite seu nome"
+              placeholder="Enter your name"
               required
             />
           </div>
@@ -167,7 +167,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
           {/* Category */}
           <div>
             <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
-              Categoria
+              Category
             </label>
             <select
               id="category"
@@ -176,13 +176,13 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
               onChange={handleInputChange}
               className="input-field"
             >
-              <option value="">Selecione uma categoria</option>
-              <option value="melhoria">Melhoria</option>
-              <option value="bug">Correção de Bug</option>
-              <option value="feature">Nova Funcionalidade</option>
+              <option value="">Select a category</option>
+              <option value="improvement">Improvement</option>
+              <option value="bug">Bug Fix</option>
+              <option value="feature">New Feature</option>
               <option value="design">Design/UX</option>
               <option value="performance">Performance</option>
-              <option value="outro">Outro</option>
+              <option value="other">Other</option>
             </select>
           </div>
 
@@ -198,7 +198,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
                 onChange={(e) => setNewTag(e.target.value)}
                 onKeyPress={handleKeyPress}
                 className="input-field flex-1"
-                placeholder="Digite uma tag e pressione Enter"
+                placeholder="Type a tag and press Enter"
               />
               <button
                 type="button"
@@ -206,7 +206,7 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
                 className="btn-primary flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
-                Adicionar
+                Add
               </button>
             </div>
             
@@ -215,14 +215,14 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
                 {formData.tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm"
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
                   >
                     <Tag className="w-3 h-3" />
                     {tag}
                     <button
                       type="button"
                       onClick={() => handleRemoveTag(tag)}
-                      className="ml-1 text-primary-600 hover:text-primary-800"
+                      className="ml-1 text-blue-600 hover:text-blue-800 transition-colors duration-200"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -233,21 +233,21 @@ const SuggestionForm: React.FC<SuggestionFormProps> = ({ isOpen, onClose, onSubm
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200">
+          <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-100">
             <button
               type="button"
               onClick={onClose}
               className="btn-secondary"
               disabled={isSubmitting}
             >
-              Cancelar
+              Cancel
             </button>
             <button
               type="submit"
               className="btn-primary"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Enviando...' : 'Enviar Sugestão'}
+              {isSubmitting ? 'Sending...' : 'Send Suggestion'}
             </button>
           </div>
         </form>

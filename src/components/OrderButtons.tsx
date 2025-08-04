@@ -13,29 +13,29 @@ const OrderButtons: React.FC<OrderButtonsProps> = ({
   onOrderChange 
 }) => {
   return (
-    <div className="flex gap-2 mb-6">
+    <div className="flex gap-2">
       <button
         onClick={() => onOrderChange('recent')}
-        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+        className={`filter-button flex items-center gap-2 ${
           currentOrder === 'recent'
-            ? 'bg-primary-600 text-white shadow-md'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            ? 'filter-button-active'
+            : 'filter-button-inactive'
         }`}
       >
         <Clock className="w-4 h-4" />
-        Mais Recentes
+        Most Recent
       </button>
       
       <button
         onClick={() => onOrderChange('likes')}
-        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+        className={`filter-button flex items-center gap-2 ${
           currentOrder === 'likes'
-            ? 'bg-primary-600 text-white shadow-md'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            ? 'filter-button-active'
+            : 'filter-button-inactive'
         }`}
       >
         <Heart className="w-4 h-4" />
-        Mais Likes
+        Most Liked
       </button>
     </div>
   );

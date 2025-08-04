@@ -19,7 +19,7 @@ const Home: React.FC = () => {
   const [showFirebaseTest, setShowFirebaseTest] = useState(false);
   const [orderType, setOrderType] = useState<OrderType>('recent');
   
-  // Filtros
+  // Filters
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterHighlighted, setFilterHighlighted] = useState(false);
@@ -36,7 +36,7 @@ const Home: React.FC = () => {
     return () => unsubscribe();
   }, [orderType]);
 
-  // Filtrar sugestões
+  // Filter suggestions
   const filteredSuggestions = suggestions.filter(suggestion => {
     if (filterStatus !== 'all' && suggestion.status !== filterStatus) return false;
     if (filterCategory !== 'all' && suggestion.category !== filterCategory) return false;
@@ -44,7 +44,7 @@ const Home: React.FC = () => {
     return true;
   });
 
-  // Estatísticas
+  // Statistics
   const totalSuggestions = suggestions.length;
   const highlightedSuggestions = suggestions.filter(s => s.isHighlighted).length;
   const pendingSuggestions = suggestions.filter(s => s.status === 'pending').length;
@@ -52,28 +52,28 @@ const Home: React.FC = () => {
   const totalLikes = suggestions.reduce((sum, s) => sum + s.likes, 0);
 
   const handleLike = (id: string) => {
-    showSuccess('Like adicionado!', 'Sua curtida foi registrada com sucesso.');
+    showSuccess('Like added!', 'Your like has been registered successfully.');
   };
 
   const handleHighlight = (id: string) => {
     const suggestion = suggestions.find(s => s.id === id);
     if (suggestion?.isHighlighted) {
-      showInfo('Destaque removido', 'A sugestão não está mais destacada.');
+      showInfo('Highlight removed', 'The suggestion is no longer highlighted.');
     } else {
-      showSuccess('Sugestão destacada!', 'A sugestão agora aparece em destaque.');
+      showSuccess('Suggestion highlighted!', 'The suggestion now appears highlighted.');
     }
   };
 
   const handleFormSubmit = () => {
-    showSuccess('Sugestão enviada!', 'Sua sugestão foi criada com sucesso.');
+    showSuccess('Suggestion sent!', 'Your suggestion has been created successfully.');
   };
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Carregando sugestões...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading suggestions...</p>
         </div>
       </div>
     );
@@ -83,7 +83,7 @@ const Home: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <h1 className="text-2xl font-bold text-gray-900">
@@ -97,14 +97,14 @@ const Home: React.FC = () => {
                 className="btn-primary flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
-                Nova Sugestão
+                New Suggestion
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Firebase Test */}
         {showFirebaseTest && (
           <div className="mb-8">
@@ -112,105 +112,103 @@ const Home: React.FC = () => {
           </div>
         )}
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          <div className="card text-center">
-            <div className="text-2xl font-bold text-primary-600">{totalSuggestions}</div>
-            <div className="text-sm text-gray-600">Total de Sugestões</div>
+        {/* Stats - Enhanced Metric Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="metric-card metric-card-blue text-center">
+            <div className="text-sm text-gray-500 mb-1">Total Suggestions</div>
+            <div className="text-2xl font-bold text-gray-800">{totalSuggestions}</div>
           </div>
           
-          <div className="card text-center">
-            <div className="text-2xl font-bold text-warning-600">{pendingSuggestions}</div>
-            <div className="text-sm text-gray-600">Pendentes</div>
+          <div className="metric-card metric-card-yellow text-center">
+            <div className="text-sm text-gray-500 mb-1">Pending</div>
+            <div className="text-2xl font-bold text-gray-800">{pendingSuggestions}</div>
           </div>
           
-          <div className="card text-center">
-            <div className="text-2xl font-bold text-success-600">{acceptedSuggestions}</div>
-            <div className="text-sm text-gray-600">Aceitas</div>
+          <div className="metric-card metric-card-green text-center">
+            <div className="text-sm text-gray-500 mb-1">Accepted</div>
+            <div className="text-2xl font-bold text-gray-800">{acceptedSuggestions}</div>
           </div>
           
-          <div className="card text-center">
-            <div className="text-2xl font-bold text-primary-600">{highlightedSuggestions}</div>
-            <div className="text-sm text-gray-600">Destacadas</div>
-          </div>
-          
-          <div className="card text-center">
-            <div className="text-2xl font-bold text-red-600">{totalLikes}</div>
-            <div className="text-sm text-gray-600">Total de Likes</div>
+          <div className="metric-card metric-card-red text-center">
+            <div className="text-sm text-gray-500 mb-1">Total Likes</div>
+            <div className="text-2xl font-bold text-gray-800">{totalLikes}</div>
           </div>
         </div>
 
-        {/* Controls */}
+        {/* Controls and Filters Reorganized */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-4">
             <ViewSwitcher viewMode={viewMode} onViewChange={setViewMode} />
             
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <Filter className="w-4 h-4" />
-              <span>Filtros:</span>
+              <span>Filters:</span>
             </div>
           </div>
 
           <div className="flex items-center gap-2 text-sm">
             <span className="text-gray-600">
-              {filteredSuggestions.length} de {totalSuggestions} sugestões
+              {filteredSuggestions.length} of {totalSuggestions} suggestions
             </span>
           </div>
         </div>
 
-        {/* Order Buttons */}
-        <OrderButtons 
-          currentOrder={orderType} 
-          onOrderChange={setOrderType} 
-        />
+        {/* Filters and Order Buttons Grouped */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-6 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+          {/* Filters */}
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700">Status:</label>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="input-field text-sm"
+              >
+                <option value="all">All</option>
+                <option value="pending">Pending</option>
+                <option value="accepted">Accepted</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
 
-        {/* Filters */}
-        <div className="flex flex-wrap items-center gap-4 mb-6 p-4 bg-white rounded-lg border border-gray-200">
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">Status:</label>
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="input-field text-sm"
-            >
-              <option value="all">Todos</option>
-              <option value="pending">Pendentes</option>
-              <option value="accepted">Aceitas</option>
-              <option value="rejected">Rejeitadas</option>
-            </select>
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700">Category:</label>
+              <select
+                value={filterCategory}
+                onChange={(e) => setFilterCategory(e.target.value)}
+                className="input-field text-sm"
+              >
+                <option value="all">All</option>
+                <option value="improvement">Improvement</option>
+                <option value="bug">Bug Fix</option>
+                <option value="feature">New Feature</option>
+                <option value="design">Design/UX</option>
+                <option value="performance">Performance</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={filterHighlighted}
+                onChange={(e) => setFilterHighlighted(e.target.checked)}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span className="text-sm font-medium text-gray-700">Highlighted only</span>
+            </label>
           </div>
 
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">Categoria:</label>
-            <select
-              value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
-              className="input-field text-sm"
-            >
-              <option value="all">Todas</option>
-              <option value="melhoria">Melhoria</option>
-              <option value="bug">Correção de Bug</option>
-              <option value="feature">Nova Funcionalidade</option>
-              <option value="design">Design/UX</option>
-              <option value="performance">Performance</option>
-              <option value="outro">Outro</option>
-            </select>
-          </div>
-
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={filterHighlighted}
-              onChange={(e) => setFilterHighlighted(e.target.checked)}
-              className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-            />
-            <span className="text-sm font-medium text-gray-700">Apenas destacadas</span>
-          </label>
+          {/* Order Buttons */}
+          <OrderButtons 
+            currentOrder={orderType} 
+            onOrderChange={setOrderType} 
+          />
         </div>
 
         {/* Error */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6">
             {error}
           </div>
         )}
@@ -222,12 +220,12 @@ const Home: React.FC = () => {
               <TrendingUp className="w-16 h-16 mx-auto" />
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Nenhuma sugestão encontrada
+              No suggestions found
             </h3>
             <p className="text-gray-600 mb-4">
               {suggestions.length === 0 
-                ? 'Seja o primeiro a fazer uma sugestão!'
-                : 'Tente ajustar os filtros para ver mais sugestões.'
+                ? 'Be the first to make a suggestion!'
+                : 'Try adjusting the filters to see more suggestions.'
               }
             </p>
             {suggestions.length === 0 && (
@@ -235,7 +233,7 @@ const Home: React.FC = () => {
                 onClick={() => setIsFormOpen(true)}
                 className="btn-primary"
               >
-                Criar Primeira Sugestão
+                Create First Suggestion
               </button>
             )}
           </div>
@@ -266,17 +264,17 @@ const Home: React.FC = () => {
         )}
       </div>
 
-             {/* Form Modal */}
-       <SuggestionForm
-         isOpen={isFormOpen}
-         onClose={() => setIsFormOpen(false)}
-         onSubmit={handleFormSubmit}
-       />
+      {/* Form Modal */}
+      <SuggestionForm
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        onSubmit={handleFormSubmit}
+      />
 
-       {/* Toast Notifications */}
-       <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
-     </div>
-   );
- };
+      {/* Toast Notifications */}
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
+    </div>
+  );
+};
 
 export default Home; 
