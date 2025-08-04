@@ -1,5 +1,5 @@
-import React from 'react';
-import { Heart, MessageCircle, User, Calendar } from 'lucide-react';
+import React, { useState } from 'react';
+import { Heart, MessageCircle, User, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { likeSuggestion } from '../services/firebase';
 import { useCommentModal } from '../contexts/CommentContext';
 import { hasUserLiked } from '../utils/userUtils';
@@ -17,6 +17,7 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
 }) => {
   const { openCommentModal } = useCommentModal();
   const { isLikeLoading, handleLike } = useLikeButton();
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   const onLikeClick = async () => {
     await handleLike(async () => {
@@ -24,6 +25,13 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
       onLike(suggestion.id);
     });
   };
+
+  const toggleDescription = () => {
+    setIsDescriptionExpanded(!isDescriptionExpanded);
+  };
+
+  // Check if description is long enough to need truncation
+  const isDescriptionLong = suggestion.description.length > 150;
 
   const formatDate = (date: Date | string) => {
     const dateObj = typeof date === 'string' ? new Date(date) : date;
@@ -70,9 +78,34 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
       </div>
 
       {/* Description */}
-      <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-        {suggestion.description}
-      </p>
+      <div className="mb-4">
+        <p className={`text-sm text-gray-600 ${
+          isDescriptionLong && !isDescriptionExpanded 
+            ? 'line-clamp-3' 
+            : ''
+        }`}>
+          {suggestion.description}
+        </p>
+        
+        {isDescriptionLong && (
+          <button
+            onClick={toggleDescription}
+            className="flex items-center gap-1 mt-2 text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
+          >
+            {isDescriptionExpanded ? (
+              <>
+                <ChevronUp className="w-4 h-4" />
+                Show less
+              </>
+            ) : (
+              <>
+                <ChevronDown className="w-4 h-4" />
+                Show more
+              </>
+            )}
+          </button>
+        )}
+      </div>
 
       {/* Tags */}
       {suggestion.tags && suggestion.tags.length > 0 && (

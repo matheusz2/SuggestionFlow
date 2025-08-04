@@ -1,5 +1,5 @@
-import React from 'react';
-import { Heart, MessageCircle, Calendar, User, ThumbsUp } from 'lucide-react';
+import React, { useState } from 'react';
+import { Heart, MessageCircle, Calendar, User, ThumbsUp, ChevronDown, ChevronUp } from 'lucide-react';
 import type { Suggestion } from '../types';
 import { likeSuggestion } from '../services/firebase';
 import { hasUserLiked } from '../utils/userUtils';
@@ -17,6 +17,7 @@ const ForumTopic = React.memo<ForumTopicProps>(({
 }) => {
   const { openCommentModal } = useCommentModal();
   const { isLikeLoading, handleLike } = useLikeButton();
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   const onLikeClick = async () => {
     await handleLike(async () => {
@@ -24,6 +25,13 @@ const ForumTopic = React.memo<ForumTopicProps>(({
       onLike(suggestion.id);
     });
   };
+
+  const toggleDescription = () => {
+    setIsDescriptionExpanded(!isDescriptionExpanded);
+  };
+
+  // Check if description is long enough to need truncation
+  const isDescriptionLong = suggestion.description.length > 200;
 
   const formatDate = (date: Date | string) => {
     const dateObj = typeof date === 'string' ? new Date(date) : date;
@@ -113,8 +121,33 @@ const ForumTopic = React.memo<ForumTopicProps>(({
           </div>
 
           {/* Description */}
-          <div className="text-gray-600 mb-4 leading-relaxed">
-            {suggestion.description}
+          <div className="mb-4">
+            <p className={`text-gray-600 leading-relaxed ${
+              isDescriptionLong && !isDescriptionExpanded 
+                ? 'line-clamp-4' 
+                : ''
+            }`}>
+              {suggestion.description}
+            </p>
+            
+            {isDescriptionLong && (
+              <button
+                onClick={toggleDescription}
+                className="flex items-center gap-1 mt-2 text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
+              >
+                {isDescriptionExpanded ? (
+                  <>
+                    <ChevronUp className="w-4 h-4" />
+                    Show less
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="w-4 h-4" />
+                    Show more
+                  </>
+                )}
+              </button>
+            )}
           </div>
 
           {/* Tags */}
