@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Filter, TrendingUp } from 'lucide-react';
+import { Plus, Filter, TrendingUp, Twitter, Twitch, Copy, Check } from 'lucide-react';
 import type { Suggestion, ViewMode } from '../types';
 import { subscribeToSuggestions } from '../services/firebase';
 import SuggestionCard from '../components/SuggestionCard';
@@ -56,6 +56,29 @@ const Home: React.FC = () => {
     showSuccess('Suggestion sent!', 'Your suggestion has been created successfully.');
   };
 
+  // Wallet copy functionality
+  const [copied, setCopied] = useState(false);
+  const walletAddress = '9B1WxNvqrkYwhSdZNxSjF3i2vfbo4gvUEUJ1xFCCbonk';
+
+  const copyWallet = async () => {
+    try {
+      await navigator.clipboard.writeText(walletAddress);
+      setCopied(true);
+      showSuccess('Wallet copied!', 'Wallet address copied to clipboard.');
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy wallet:', error);
+    }
+  };
+
+  const openTwitter = () => {
+    window.open('https://x.com/BonkputerAI', '_blank');
+  };
+
+  const openTwitch = () => {
+    window.open('https://twitch.tv/BonkPuter', '_blank');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -80,15 +103,53 @@ const Home: React.FC = () => {
             </div>
             
             <div className="flex items-center flex-shrink-0">
+              {/* New Suggestion Button */}
               <button
                 onClick={() => setIsFormOpen(true)}
-                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm lg:text-base whitespace-nowrap border-0 btn-new-highlight"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm lg:text-base whitespace-nowrap border-0 btn-new-highlight"
               >
                 <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span className="hidden xs:inline">New Suggestion</span>
                 <span className="xs:hidden font-extrabold">NEW</span>
               </button>
             </div>
+          </div>
+
+          {/* Social Links & Wallet Section */}
+          <div className="flex items-center justify-center gap-4 sm:gap-6 py-4 sm:py-6 border-t border-gray-100">
+            {/* Twitter */}
+            <button
+              onClick={openTwitter}
+              className="flex flex-col items-center gap-2 px-6 py-4 bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 rounded-xl transition-all duration-200 font-medium text-sm sm:text-base shadow-sm hover:shadow-md min-w-[80px] sm:min-w-[100px]"
+              title="Follow us on Twitter"
+            >
+              <Twitter className="w-6 h-6 sm:w-7 sm:h-7" />
+              <span className="font-semibold">Twitter</span>
+            </button>
+            
+            {/* Twitch */}
+            <button
+              onClick={openTwitch}
+              className="flex flex-col items-center gap-2 px-6 py-4 bg-purple-50 hover:bg-purple-100 text-purple-600 hover:text-purple-700 rounded-xl transition-all duration-200 font-medium text-sm sm:text-base shadow-sm hover:shadow-md min-w-[80px] sm:min-w-[100px]"
+              title="Follow us on Twitch"
+            >
+              <Twitch className="w-6 h-6 sm:w-7 sm:h-7" />
+              <span className="font-semibold">Twitch</span>
+            </button>
+
+            {/* Wallet Copy */}
+            <button
+              onClick={copyWallet}
+              className="flex flex-col items-center gap-2 px-6 py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 rounded-xl transition-all duration-200 font-mono text-sm sm:text-base shadow-sm hover:shadow-md min-w-[80px] sm:min-w-[100px]"
+              title="Copy wallet address"
+            >
+              {copied ? (
+                <Check className="w-6 h-6 sm:w-7 sm:h-7 text-green-600" />
+              ) : (
+                <Copy className="w-6 h-6 sm:w-7 sm:h-7" />
+              )}
+              <span className="font-semibold">Wallet</span>
+            </button>
           </div>
         </div>
       </header>
