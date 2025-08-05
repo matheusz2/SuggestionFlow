@@ -291,10 +291,10 @@ export const subscribeToComments = (
       
       callback(comments);
     }, (error) => {
-      
+      console.error('Error in subscribeToComments:', error);
     });
   } catch (error) {
-    
+    console.error('Error creating query:', error);
     callback([]);
   }
 };
@@ -317,7 +317,6 @@ export const likeComment = async (commentId: string, currentLikes: number, curre
         updatedAt: serverTimestamp(),
       });
       
-      
     } else {
       // Add like
       const newLikedBy = [...currentLikedBy, currentUserId];
@@ -327,10 +326,9 @@ export const likeComment = async (commentId: string, currentLikes: number, curre
         updatedAt: serverTimestamp(),
       });
       
-      
     }
   } catch (error) {
-    
+    console.error('Error giving like to comment:', error);
     throw error;
   }
 };
@@ -348,9 +346,8 @@ export const deleteComment = async (commentId: string, suggestionId: string): Pr
       updatedAt: serverTimestamp(),
     });
     
-    
   } catch (error) {
-    
+    console.error('Error deleting comment:', error);
     throw error;
   }
 };
