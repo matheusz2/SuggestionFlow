@@ -69,25 +69,6 @@ const Home: React.FC = () => {
     showSuccess('Export failed!', `Error: ${error}`);
   };
 
-  // Wallet copy functionality
-  const [copied, setCopied] = useState(false);
-  const walletAddress = '9B1WxNvqrkYwhSdZNxSjF3i2vfbo4gvUEUJ1xFCCbonk';
-
-  
-
-  const shareOnTwitter = () => {
-    const text = encodeURIComponent(
-      'Your idea can shape the future.\n\n' +
-      'With SuggestionFlow, RootPuter opens the door to creativity, open feedback, and continuous evolution.\n\n' +
-      'Join now: https://rootputer-suggestionflow.vercel.app/\n\n' +
-      '@RootPuterAI\n\n' +
-
-      '#RootPuter #OpenInnovation #SuggestionFlow #BuildingTogether'
-    );
-    const twitterUrl = `https://x.com/intent/tweet?text=${text}`;
-    window.open(twitterUrl, '_blank');
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
