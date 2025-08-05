@@ -9,6 +9,7 @@ import ViewSwitcher from '../components/ViewSwitcher';
 import FirebaseTest from '../components/FirebaseTest';
 import OrderButtons, { type OrderType } from '../components/OrderButtons';
 import ToastContainer, { useToast } from '../components/ToastContainer';
+import ExportButton from '../components/ExportButton';
 
 const Home: React.FC = () => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -54,6 +55,18 @@ const Home: React.FC = () => {
 
   const handleFormSubmit = () => {
     showSuccess('Suggestion sent!', 'Your suggestion has been created successfully.');
+  };
+
+  const handleExportStart = () => {
+    showSuccess('Export started!', 'Preparing your data for export...');
+  };
+
+  const handleExportComplete = () => {
+    showSuccess('Export completed!', 'Your data has been exported successfully.');
+  };
+
+  const handleExportError = (error: string) => {
+    showSuccess('Export failed!', `Error: ${error}`);
   };
 
   // Wallet copy functionality
@@ -292,10 +305,18 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-gray-600">
-                {filteredSuggestions.length} of {totalSuggestions} suggestions
-              </span>
+            <div className="flex items-center gap-4">
+              <ExportButton
+                suggestions={filteredSuggestions}
+                onExportStart={handleExportStart}
+                onExportComplete={handleExportComplete}
+                onExportError={handleExportError}
+              />
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-gray-600">
+                  {filteredSuggestions.length} of {totalSuggestions} suggestions
+                </span>
+              </div>
             </div>
           </div>
 

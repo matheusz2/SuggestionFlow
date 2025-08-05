@@ -5,6 +5,7 @@ import type { OrderType } from '../components/OrderButtons';
 import { getCurrentUserId } from '../utils/userUtils';
 import { firebaseConfig } from '../config/firebase-config';
 
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -24,7 +25,7 @@ const executeWithCache = async <T>(
 ): Promise<T> => {
   // Check if there's already a pending request for this operation
   if (pendingRequests.has(requestKey)) {
-    console.log('Request already in progress, waiting for completion:', requestKey);
+    
     await pendingRequests.get(requestKey);
     return operation(); // Execute again to get the result
   }
@@ -57,10 +58,10 @@ export const addSuggestion = async (suggestionData: SuggestionFormData): Promise
       updatedAt: serverTimestamp(),
     });
     
-    console.log('Suggestion added with ID:', docRef.id);
+    
     return docRef.id;
   } catch (error) {
-    console.error('Error adding suggestion:', error);
+    
     throw error;
   }
 };
@@ -74,9 +75,9 @@ export const updateSuggestion = async (id: string, updates: Partial<Suggestion>)
       updatedAt: serverTimestamp(),
     });
     
-    console.log('Suggestion updated:', id);
+    
   } catch (error) {
-    console.error('Error updating suggestion:', error);
+    
     throw error;
   }
 };
@@ -87,9 +88,9 @@ export const deleteSuggestion = async (id: string): Promise<void> => {
     const docRef = doc(db, 'suggestions', id);
     await deleteDoc(docRef);
     
-    console.log('Suggestion deleted:', id);
+    
   } catch (error) {
-    console.error('Error deleting suggestion:', error);
+    
     throw error;
   }
 };
@@ -115,7 +116,7 @@ export const likeSuggestion = async (id: string, currentLikes: number, currentLi
           updatedAt: serverTimestamp(),
         });
         
-        console.log('Like removed from suggestion:', id);
+        
       } else {
         // Add like
         const newLikedBy = [...currentLikedBy, currentUserId];
@@ -125,10 +126,10 @@ export const likeSuggestion = async (id: string, currentLikes: number, currentLi
           updatedAt: serverTimestamp(),
         });
         
-        console.log('Like added to suggestion:', id);
+        
       }
     } catch (error) {
-      console.error('Error giving like:', error);
+      
       throw error;
     }
   });
@@ -146,9 +147,9 @@ export const toggleHighlight = async (id: string, isHighlighted: boolean): Promi
         updatedAt: serverTimestamp(),
       });
       
-      console.log('Highlight changed for suggestion:', id);
+      
     } catch (error) {
-      console.error('Error changing highlight:', error);
+      
       throw error;
     }
   });
@@ -221,10 +222,10 @@ export const addComment = async (suggestionId: string, content: string, author: 
       updatedAt: serverTimestamp(),
     });
     
-    console.log('Comment added with ID:', docRef.id);
+    
     return docRef.id;
   } catch (error) {
-    console.error('Error adding comment:', error);
+    
     throw error;
   }
 };
@@ -256,7 +257,7 @@ export const getComments = async (suggestionId: string): Promise<Comment[]> => {
 
     return comments;
   } catch (error) {
-    console.error('Error getting comments:', error);
+    
     throw error;
   }
 };
@@ -290,10 +291,10 @@ export const subscribeToComments = (
       
       callback(comments);
     }, (error) => {
-      console.error('Error in subscribeToComments:', error);
+      
     });
   } catch (error) {
-    console.error('Error creating query:', error);
+    
     callback([]);
   }
 };
@@ -316,7 +317,7 @@ export const likeComment = async (commentId: string, currentLikes: number, curre
         updatedAt: serverTimestamp(),
       });
       
-      console.log('Like removed from comment:', commentId);
+      
     } else {
       // Add like
       const newLikedBy = [...currentLikedBy, currentUserId];
@@ -326,10 +327,10 @@ export const likeComment = async (commentId: string, currentLikes: number, curre
         updatedAt: serverTimestamp(),
       });
       
-      console.log('Like added to comment:', commentId);
+      
     }
   } catch (error) {
-    console.error('Error giving like to comment:', error);
+    
     throw error;
   }
 };
@@ -347,9 +348,9 @@ export const deleteComment = async (commentId: string, suggestionId: string): Pr
       updatedAt: serverTimestamp(),
     });
     
-    console.log('Comment deleted:', commentId);
+    
   } catch (error) {
-    console.error('Error deleting comment:', error);
+    
     throw error;
   }
 };

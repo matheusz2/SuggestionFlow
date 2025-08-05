@@ -14,7 +14,7 @@ export const useDebouncedClick = (delay: number = 500) => {
   ) => {
     // Prevent multiple simultaneous requests
     if (isLoading) {
-      console.log('Request already in progress, ignoring click');
+      
       return;
     }
 
@@ -23,7 +23,7 @@ export const useDebouncedClick = (delay: number = 500) => {
     try {
       await asyncFunction();
     } catch (error) {
-      console.error('Error in debounced function:', error);
+      
     } finally {
       // Clear any existing timeout
       if (timeoutRef.current) {
