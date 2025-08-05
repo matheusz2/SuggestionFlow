@@ -1,5 +1,8 @@
 # 🚀 BonkPuter - SuggestionFlow
 
+<img width="1276" height="932" alt="image" src="https://github.com/user-attachments/assets/536087de-98ef-46fa-8548-e54b14cf5a97" />
+
+
 A collaborative real-time suggestion panel built with React, TypeScript and Firebase.
 
 ## ✨ Features
