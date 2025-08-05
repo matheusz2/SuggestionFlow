@@ -6,14 +6,14 @@ class UserManager {
   getUserId(): string {
     if (!this.userId) {
       // Try to recover from localStorage
-      const storedUserId = localStorage.getItem('BonkPuter - SuggestionFlow_user_id');
+      const storedUserId = localStorage.getItem('RootPuter - SuggestionFlow_user_id');
       
       if (storedUserId) {
         this.userId = storedUserId;
       } else {
         // Create new ID
         this.userId = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-        localStorage.setItem('BonkPuter - SuggestionFlow_user_id', this.userId);
+        localStorage.setItem('RootPuter - SuggestionFlow_user_id', this.userId);
       }
     }
     
@@ -32,7 +32,7 @@ class UserManager {
   // Clear user ID (for logout)
   clearUserId(): void {
     this.userId = null;
-    localStorage.removeItem('BonkPuter - SuggestionFlow_user_id');
+    localStorage.removeItem('RootPuter - SuggestionFlow_user_id');
   }
 }
 

@@ -1,4 +1,4 @@
-# 🚀 SPRINT.md - Roadmap do BonkPuter - Suggestion
+# 🚀 SPRINT.md - Roadmap do RootPuter - Suggestion
 
 
 Projeto:
@@ -14,7 +14,7 @@ Deve ser feito em typescript
 
 ## 📋 Visão Geral
 
-Este documento mapeia todas as tarefas necessárias para tornar o BonkPuter - Suggestion 100% funcional, divididas em sprints progressivos e organizadas por prioridade.
+Este documento mapeia todas as tarefas necessárias para tornar o RootPuter - Suggestion 100% funcional, divididas em sprints progressivos e organizadas por prioridade.
 
 ## 🎯 Sprint 1 - FUNDAÇÃO (CRÍTICO) ✅ COMPLETO
 
@@ -385,7 +385,7 @@ Este documento mapeia todas as tarefas necessárias para tornar o BonkPuter - Su
 
 ---
 
-**🎯 Objetivo:** Transformar o BonkPuter - Suggestion em uma plataforma completa e robusta para gestão de sugestões colaborativas.
+**🎯 Objetivo:** Transformar o RootPuter - Suggestion em uma plataforma completa e robusta para gestão de sugestões colaborativas.
 
 **📅 Timeline:** 8-10 semanas para completar todos os sprints
 

@@ -1,4 +1,4 @@
-# 🔥 Firebase Setup for BonkPuter - SuggestionFlow
+# 🔥 Firebase Setup for RootPuter - SuggestionFlow
 
 ## 📋 Prerequisites
 
@@ -11,7 +11,7 @@
 
 1. Go to: https://console.firebase.google.com/
 2. Click "Create project"
-3. Enter the name: `BonkPuter - SuggestionFlow`
+3. Enter the name: `RootPuter - SuggestionFlow`
 4. Accept the terms and continue
 5. **Disable** Google Analytics (optional)
 6. Click "Create project"
@@ -29,7 +29,7 @@
 1. In the sidebar, click ⚙️ (Settings) > "Project settings"
 2. In the "General" tab, scroll to "Your apps"
 3. Click the web icon (</>) to add web app
-4. Enter the name: `BonkPuter - SuggestionFlow Web`
+4. Enter the name: `RootPuter - SuggestionFlow Web`
 5. **DO NOT** check "Also set up Firebase Hosting"
 6. Click "Register app"
 7. Copy the configuration that appears

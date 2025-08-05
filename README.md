@@ -1,4 +1,4 @@
-# 🚀 BonkPuter - SuggestionFlow
+# 🚀 RootPuter - SuggestionFlow
 
 <img width="1276" height="932" alt="image" src="https://github.com/user-attachments/assets/536087de-98ef-46fa-8548-e54b14cf5a97" />
 
@@ -29,7 +29,7 @@ A collaborative real-time suggestion panel built with React, TypeScript and Fire
 1. **Clone the repository**
 ```bash
 git clone <your-repository>
-cd BonkPuter - SuggestionFlow
+cd RootPuter - SuggestionFlow
 ```
 
 2. **Install dependencies**
@@ -64,7 +64,7 @@ npm run dev
 1. **Create a Firebase project**
    - Go to [console.firebase.google.com](https://console.firebase.google.com/)
    - Click "Create project"
-   - Name: `BonkPuter - SuggestionFlow`
+   - Name: `RootPuter - SuggestionFlow`
 
 2. **Enable Firestore**
    - Side menu → "Firestore Database"
@@ -226,6 +226,6 @@ If you encounter any problems or have questions:
 
 ---
 
-**🎯 Objective**: Transform the BonkPuter - Suggestion into a complete and robust platform for collaborative suggestion management.
+**🎯 Objective**: Transform the RootPuter - Suggestion into a complete and robust platform for collaborative suggestion management.
 
 **📅 Status**: Sprint 1 complete - Basic functionalities implemented and working!
