@@ -84,26 +84,19 @@ const Home: React.FC = () => {
     }
   };
 
+
   const openTwitter = () => {
-    window.open('https://x.com/BonkputerAI', '_blank');
-  };
-
-  const openTwitch = () => {
-    window.open('https://twitch.tv/BonkPuter', '_blank');
-  };
-
-  const openDexScreener = () => {
-    window.open('https://dexscreener.com/solana/59r7jhq2jettxukbj9rvz2gfcgjswkfvhc5sq1cktboq', '_blank');
+    window.open('https://x.com/MatheusDevSaas', '_blank');
   };
 
   const shareOnTwitter = () => {
     const text = encodeURIComponent(
       'Your idea can shape the future.\n\n' +
-      'With SuggestionFlow, Bonkputer opens the door to creativity, open feedback, and continuous evolution.\n\n' +
-      'Join now: https://bonkputer-suggestionflow.vercel.app/\n\n' +
-      '@BonkputerAI\n\n' +
+      'With SuggestionFlow, RootPuter opens the door to creativity, open feedback, and continuous evolution.\n\n' +
+      'Join now: https://rootputer-suggestionflow.vercel.app/\n\n' +
+      '@RootPuterAI\n\n' +
 
-      '#Bonkputer #OpenInnovation #SuggestionFlow #BuildingTogether'
+      '#RootPuter #OpenInnovation #SuggestionFlow #BuildingTogether'
     );
     const twitterUrl = `https://x.com/intent/tweet?text=${text}`;
     window.open(twitterUrl, '_blank');
@@ -125,7 +118,7 @@ const Home: React.FC = () => {
       {/* Background Image for entire page */}
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-10"
-        style={{ backgroundImage: "url('./bonkputer.webp')" }}
+        style={{ backgroundImage: "url('./RootPuter.webp')" }}
       ></div>
       
       {/* Content */}
@@ -139,7 +132,7 @@ const Home: React.FC = () => {
                 {/* Hierarchical Title */}
                 <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-neutral-900 truncate leading-tight">
-                    BonkPuter
+                    RootPuter
                   </h1>
                   <span className="text-xs sm:text-sm text-neutral-500 font-medium">
                     SuggestionFlow
@@ -164,102 +157,7 @@ const Home: React.FC = () => {
             {/* Divider Line */}
             <div className="border-t border-gray-200/60 mx-4 sm:mx-6 lg:mx-8"></div>
 
-            {/* Social Links & Wallet Section - Enhanced with Mobile Responsiveness */}
-            <div className="py-4 sm:py-5 border-t border-gray-100/40">
-              {/* Desktop Layout */}
-              <div className="hidden sm:flex items-center justify-center gap-4 lg:gap-6">
-                {/* Twitter */}
-                <button
-                  onClick={openTwitter}
-                  className="rounded-lg px-4 py-3 bg-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg flex flex-col items-center gap-1.5 min-w-[70px] group"
-                  title="Follow us on Twitter"
-                >
-                  <Twitter className="w-5 h-6 text-blue-500 group-hover:text-blue-600 transition-colors duration-200" />
-                  <span className="font-semibold text-sm text-gray-700 group-hover:text-gray-900">Twitter</span>
-                </button>
 
-                {/* Twitch */}
-                <button
-                  onClick={openTwitch}
-                  className="rounded-lg px-4 py-3 bg-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg flex flex-col items-center gap-1.5 min-w-[70px] group"
-                  title="Follow us on Twitch"
-                >
-                  <Twitch className="w-5 h-6 text-purple-500 group-hover:text-purple-600 transition-colors duration-200" />
-                  <span className="font-semibold text-sm text-gray-700 group-hover:text-gray-900">Twitch</span>
-                </button>
-
-                {/* Market Chart */}
-                <button
-                  onClick={openDexScreener}
-                  className="rounded-lg px-4 py-3 bg-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg flex flex-col items-center gap-1.5 min-w-[70px] group"
-                  title="View Market Chart"
-                >
-                  <TrendingUp className="w-5 h-6 text-green-500 group-hover:text-green-600 transition-colors duration-200" />
-                  <span className="font-semibold text-sm text-gray-700 group-hover:text-gray-900">Chart</span>
-                </button>
-
-                {/* Wallet Copy */}
-                <button
-                  onClick={copyWallet}
-                  className="rounded-lg px-4 py-3 bg-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg flex flex-col items-center gap-1.5 min-w-[70px] group"
-                  title="Copy wallet address"
-                >
-                  {copied ? (
-                    <Check className="w-5 h-6 text-green-500 group-hover:text-green-600 transition-colors duration-200" />
-                  ) : (
-                    <Copy className="w-5 h-6 text-gray-500 group-hover:text-gray-600 transition-colors duration-200" />
-                  )}
-                  <span className="font-semibold text-sm text-gray-700 group-hover:text-gray-900">Wallet</span>
-                </button>
-              </div>
-
-              {/* Mobile Layout - Grid 2x2 */}
-              <div className="sm:hidden grid grid-cols-2 gap-3">
-                {/* Twitter */}
-                <button
-                  onClick={openTwitter}
-                  className="rounded-lg px-3 py-2 bg-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg flex flex-col items-center gap-1 group"
-                  title="Follow us on Twitter"
-                >
-                  <Twitter className="w-4 h-4 text-blue-500 group-hover:text-blue-600 transition-colors duration-200" />
-                  <span className="font-semibold text-xs text-gray-700 group-hover:text-gray-900">Twitter</span>
-                </button>
-
-                {/* Twitch */}
-                <button
-                  onClick={openTwitch}
-                  className="rounded-lg px-3 py-2 bg-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg flex flex-col items-center gap-1 group"
-                  title="Follow us on Twitch"
-                >
-                  <Twitch className="w-4 h-4 text-purple-500 group-hover:text-purple-600 transition-colors duration-200" />
-                  <span className="font-semibold text-xs text-gray-700 group-hover:text-gray-900">Twitch</span>
-                </button>
-
-                {/* Market Chart */}
-                <button
-                  onClick={openDexScreener}
-                  className="rounded-lg px-3 py-2 bg-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg flex flex-col items-center gap-1 group"
-                  title="View Market Chart"
-                >
-                  <TrendingUp className="w-4 h-4 text-green-500 group-hover:text-green-600 transition-colors duration-200" />
-                  <span className="font-semibold text-xs text-gray-700 group-hover:text-gray-900">Chart</span>
-                </button>
-
-                {/* Wallet Copy */}
-                <button
-                  onClick={copyWallet}
-                  className="rounded-lg px-3 py-2 bg-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg flex flex-col items-center gap-1 group"
-                  title="Copy wallet address"
-                >
-                  {copied ? (
-                    <Check className="w-4 h-4 text-green-500 group-hover:text-green-600 transition-colors duration-200" />
-                  ) : (
-                    <Copy className="w-4 h-4 text-gray-500 group-hover:text-gray-600 transition-colors duration-200" />
-                  )}
-                  <span className="font-semibold text-xs text-gray-700 group-hover:text-gray-900">Wallet</span>
-                </button>
-              </div>
-            </div>
           </div>
         </header>
 
@@ -437,9 +335,9 @@ const Home: React.FC = () => {
           <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="text-center">
               <div className="flex items-center justify-center gap-4 mb-6">
-                <img src='./bonkputer.webp' alt='Bonkputer Logo' className='w-12 h-12 sm:w-14 sm:h-14 rounded-full' />
+                <img src='./RootPuter.webp' alt='RootPuter Logo' className='w-12 h-12 sm:w-14 sm:h-14 rounded-full' />
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-                  Share the Bonkputer Experience
+                  Share the RootPuter Experience
                 </h3>
               </div>
               <p className="text-gray-600 mb-8 text-lg sm:text-xl max-w-2xl mx-auto">
@@ -465,7 +363,7 @@ const Home: React.FC = () => {
             
             <div className="mt-8 pt-8 border-t border-black">
               <p className="text-sm text-gray-500">
-                © 2025 Bonkputer SuggestionFlow. Made with ❤️ for the community.
+                © 2025 RootPuter SuggestionFlow. Made with ❤️ for the community.
               </p>
               <p className="text-sm text-gray-500 mt-1">
                 Developed by{' '}
