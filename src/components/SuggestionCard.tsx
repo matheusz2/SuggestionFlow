@@ -124,32 +124,32 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({
       {/* Footer with Actions and Information */}
       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
         {/* Actions (Likes and Comments) */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {/* Like Button */}
           <button
             onClick={onLikeClick}
             disabled={isLikeLoading}
-            className={`action-button ${
+            className={`flex items-center gap-1.5 px-2 py-1.5 text-sm text-gray-600 hover:text-red-500 hover:bg-red-50 rounded-md transition-all duration-200 ${
               hasUserLiked(suggestion)
-                ? 'text-red-500 hover:text-red-600'
+                ? 'text-red-500 bg-red-50'
                 : ''
             } ${isLikeLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
             title={isLikeLoading ? 'Processing...' : (hasUserLiked(suggestion) ? 'Remove like' : 'Like this suggestion')}
           >
-            <Heart className={`w-4 h-4 icon-button ${
+            <Heart className={`w-3.5 h-3.5 ${
               hasUserLiked(suggestion) ? 'fill-current' : ''
             } ${isLikeLoading ? 'animate-pulse' : ''}`} />
-            <span className="text-sm font-medium">{suggestion.likes}</span>
+            <span className="font-medium text-xs">{suggestion.likes}</span>
           </button>
 
           {/* Comment Button */}
           <button 
             onClick={() => openCommentModal(suggestion.id)}
-            className="action-button"
+            className="flex items-center gap-1.5 px-2 py-1.5 text-sm text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-md transition-all duration-200"
             title="View comments"
           >
-            <MessageCircle className="w-4 h-4 icon-button" />
-            <span className="text-sm font-medium">{suggestion.commentCount || 0}</span>
+            <MessageCircle className="w-3.5 h-3.5" />
+            <span className="font-medium text-xs">{suggestion.commentCount || 0}</span>
           </button>
         </div>
 

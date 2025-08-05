@@ -68,7 +68,7 @@ const ForumTopic = React.memo<ForumTopicProps>(({
     }`}>
       <div className="flex gap-4">
         {/* Left Side - Stats */}
-        <div className="flex flex-col items-center gap-2 min-w-[80px]">
+        <div className="flex flex-col items-center gap-2 min-w-[60px]">
           {/* Like Count */}
           <div className="text-center">
             <button
@@ -81,10 +81,10 @@ const ForumTopic = React.memo<ForumTopicProps>(({
               } ${isLikeLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
               title={isLikeLoading ? 'Processing...' : (hasUserLiked(suggestion) ? 'Remove like' : 'Like this suggestion')}
             >
-              <ThumbsUp className={`w-6 h-6 icon-button ${
+              <ThumbsUp className={`w-5 h-5 ${
                 hasUserLiked(suggestion) ? 'fill-current' : ''
               } ${isLikeLoading ? 'animate-pulse' : ''}`} />
-              <span className="text-lg font-bold">{suggestion.likes}</span>
+              <span className="text-base font-bold">{suggestion.likes}</span>
               <span className="text-xs text-gray-500">likes</span>
             </button>
           </div>
@@ -166,21 +166,21 @@ const ForumTopic = React.memo<ForumTopicProps>(({
 
           {/* Footer Actions */}
           <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4">
               {/* Like Button */}
               <button
                 onClick={onLikeClick}
-                className={`action-button ${
+                className={`flex items-center gap-1.5 px-2 py-1.5 text-sm text-gray-600 hover:text-red-500 hover:bg-red-50 rounded-md transition-all duration-200 ${
                   hasUserLiked(suggestion)
-                    ? 'text-red-500 hover:text-red-600'
+                    ? 'text-red-500 bg-red-50'
                     : ''
                 }`}
                 title={hasUserLiked(suggestion) ? 'Remove like' : 'Like this suggestion'}
               >
-                <Heart className={`w-5 h-5 icon-button ${
+                <Heart className={`w-3.5 h-3.5 ${
                   hasUserLiked(suggestion) ? 'fill-current' : ''
                 }`} />
-                <span className="font-medium">
+                <span className="font-medium text-xs">
                   {hasUserLiked(suggestion) ? 'Liked' : 'Like'}
                 </span>
               </button>
@@ -188,11 +188,11 @@ const ForumTopic = React.memo<ForumTopicProps>(({
               {/* Comment Button */}
               <button 
                 onClick={() => openCommentModal(suggestion.id)}
-                className="action-button"
+                className="flex items-center gap-1.5 px-2 py-1.5 text-sm text-gray-600 hover:text-blue-500 hover:bg-blue-50 rounded-md transition-all duration-200"
                 title="View comments"
               >
-                <MessageCircle className="w-4 h-4 icon-button" />
-                <span className="font-medium">
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span className="font-medium text-xs">
                   Comment ({suggestion.commentCount || 0})
                 </span>
               </button>
