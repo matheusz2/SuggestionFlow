@@ -84,9 +84,15 @@ const Home: React.FC = () => {
   };
 
   const shareOnTwitter = () => {
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent('🚀 Check out this amazing SuggestionFlow platform by Bonkputer! Share your ideas and help shape the future! 💡 #Bonkputer #SuggestionFlow #Innovation');
-    const twitterUrl = `https://x.com/intent/tweet?text=${text}&url=${url}`;
+    const text = encodeURIComponent(
+      'Your idea can shape the future.\n\n' +
+      'With SuggestionFlow, Bonkputer opens the door to creativity, open feedback, and continuous evolution.\n\n' +
+      'Join now: https://bonkputer-suggestionflow.vercel.app/\n\n' +
+      '@BonkputerAI\n\n' +
+
+      '#Bonkputer #OpenInnovation #SuggestionFlow #BuildingTogether'
+    );
+    const twitterUrl = `https://x.com/intent/tweet?text=${text}`;
     window.open(twitterUrl, '_blank');
   };
 
