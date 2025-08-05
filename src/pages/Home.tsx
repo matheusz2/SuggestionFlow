@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Filter, TrendingUp, Twitter, Twitch, Copy, Check } from 'lucide-react';
+import { Plus, Filter, TrendingUp, Twitter } from 'lucide-react';
 import type { Suggestion, ViewMode } from '../types';
 import { subscribeToSuggestions } from '../services/firebase';
 import SuggestionCard from '../components/SuggestionCard';
@@ -68,22 +68,6 @@ const Home: React.FC = () => {
   const handleExportError = (error: string) => {
     showSuccess('Export failed!', `Error: ${error}`);
   };
-
-  // Wallet copy functionality
-  const [copied, setCopied] = useState(false);
-  const walletAddress = '9B1WxNvqrkYwhSdZNxSjF3i2vfbo4gvUEUJ1xFCCbonk';
-
-  const copyWallet = async () => {
-    try {
-      await navigator.clipboard.writeText(walletAddress);
-      setCopied(true);
-      showSuccess('Wallet copied!', 'Wallet address copied to clipboard.');
-      setTimeout(() => setCopied(false), 2000);
-    } catch (error) {
-      console.error('Failed to copy wallet:', error);
-    }
-  };
-
 
   const openTwitter = () => {
     window.open('https://x.com/MatheusDevSaas', '_blank');
