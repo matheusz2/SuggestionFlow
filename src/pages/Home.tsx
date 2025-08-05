@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Filter, TrendingUp, Twitter } from 'lucide-react';
+import { Plus, Filter, TrendingUp } from 'lucide-react';
 import type { Suggestion, ViewMode } from '../types';
 import { subscribeToSuggestions } from '../services/firebase';
 import SuggestionCard from '../components/SuggestionCard';
@@ -69,9 +69,11 @@ const Home: React.FC = () => {
     showSuccess('Export failed!', `Error: ${error}`);
   };
 
-  const openTwitter = () => {
-    window.open('https://x.com/MatheusDevSaas', '_blank');
-  };
+  // Wallet copy functionality
+  const [copied, setCopied] = useState(false);
+  const walletAddress = '9B1WxNvqrkYwhSdZNxSjF3i2vfbo4gvUEUJ1xFCCbonk';
+
+  
 
   const shareOnTwitter = () => {
     const text = encodeURIComponent(
@@ -102,7 +104,7 @@ const Home: React.FC = () => {
       {/* Background Image for entire page */}
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-10"
-        style={{ backgroundImage: "url('./RootPuter.webp')" }}
+        style={{ backgroundImage: "url('./rootputer.webp')" }}
       ></div>
       
       {/* Content */}
@@ -319,7 +321,7 @@ const Home: React.FC = () => {
           <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="text-center">
               <div className="flex items-center justify-center gap-4 mb-6">
-                <img src='./RootPuter.webp' alt='RootPuter Logo' className='w-12 h-12 sm:w-14 sm:h-14 rounded-full' />
+                <img src='./rootputer.webp' alt='RootPuter Logo' className='w-12 h-12 sm:w-14 sm:h-14 rounded-full' />
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
                   Share the RootPuter Experience
                 </h3>
@@ -327,22 +329,6 @@ const Home: React.FC = () => {
               <p className="text-gray-600 mb-8 text-lg sm:text-xl max-w-2xl mx-auto">
                 Help us grow our community! Share this amazing platform with your friends and let them discover the power of collaborative innovation. 🚀
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button
-                  onClick={shareOnTwitter}
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-3 text-lg"
-                >
-                  <Twitter className="w-6 h-6" />
-                  <span>Share on Twitter</span>
-                </button>
-                <button
-                  onClick={openTwitter}
-                  className="bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 font-semibold py-4 px-8 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center gap-3 text-lg backdrop-blur-sm"
-                >
-                  <Twitter className="w-6 h-6" />
-                  <span>Follow on X</span>
-                </button>
-              </div>
             </div>
             
             <div className="mt-8 pt-8 border-t border-black">
