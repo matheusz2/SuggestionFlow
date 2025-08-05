@@ -18,7 +18,7 @@ const Home: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [showFirebaseTest] = useState(false);
   const [orderType, setOrderType] = useState<OrderType>('recent');
-  
+
   // Filters
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
@@ -79,6 +79,17 @@ const Home: React.FC = () => {
     window.open('https://twitch.tv/BonkPuter', '_blank');
   };
 
+  const openDexScreener = () => {
+    window.open('https://dexscreener.com/solana/59r7jhq2jettxukbj9rvz2gfcgjswkfvhc5sq1cktboq', '_blank');
+  };
+
+  const shareOnTwitter = () => {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent('🚀 Check out this amazing SuggestionFlow platform by Bonkputer! Share your ideas and help shape the future! 💡 #Bonkputer #SuggestionFlow #Innovation');
+    const twitterUrl = `https://x.com/intent/tweet?text=${text}&url=${url}`;
+    window.open(twitterUrl, '_blank');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -91,226 +102,287 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header - Mobile First */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-screen-xl mx-auto px-3 sm:px-4 lg:px-8">
-          <div className="flex items-center justify-between h-11 sm:h-14 lg:h-16">
-            <div className="flex items-center min-w-0 flex-1 pr-2">
-              <h1 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold text-gray-900 truncate leading-tight">
-                BonkPuter - SuggestionFlow
-              </h1>
+    <div className="min-h-screen bg-gray-50 relative">
+      {/* Background Image for entire page */}
+      <div 
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-10"
+        style={{ backgroundImage: "url('./bonkputer.webp')" }}
+      ></div>
+      
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Header - Mobile First */}
+        <header className="bg-white/90 backdrop-blur-sm shadow-sm border-b border-gray-200/50">
+          <div className="max-w-screen-xl mx-auto px-3 sm:px-4 lg:px-8">
+            <div className="flex items-center justify-between h-11 sm:h-14 lg:h-16">
+              <div className="flex items-center min-w-0 flex-1 pr-2">
+                <h1 className="text-base sm:text-lg lg:text-xl xl:text-2xl font-bold text-gray-900 truncate leading-tight">
+                  BonkPuter - SuggestionFlow
+                </h1>
+              </div>
+
+              <div className="flex items-center flex-shrink-0">
+                {/* New Suggestion Button */}
+                <button
+                  onClick={() => setIsFormOpen(true)}
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm lg:text-base whitespace-nowrap border-0 btn-new-highlight"
+                >
+                  <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span className="hidden xs:inline">New Suggestion</span>
+                  <span className="xs:hidden font-extrabold">NEW</span>
+                </button>
+              </div>
             </div>
-            
-            <div className="flex items-center flex-shrink-0">
-              {/* New Suggestion Button */}
+
+            {/* Social Links & Wallet Section */}
+            <div className="flex items-center justify-center gap-4 sm:gap-6 py-4 sm:py-6 border-t border-gray-100/50">
+              {/* Twitter */}
               <button
-                onClick={() => setIsFormOpen(true)}
-                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm lg:text-base whitespace-nowrap border-0 btn-new-highlight"
+                onClick={openTwitter}
+                className="flex flex-col items-center gap-2 px-6 py-4 bg-blue-50/80 hover:bg-blue-100/90 text-blue-600 hover:text-blue-700 rounded-xl transition-all duration-200 font-medium text-sm sm:text-base shadow-sm hover:shadow-md min-w-[80px] sm:min-w-[100px] backdrop-blur-sm"
+                title="Follow us on Twitter"
               >
-                <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="hidden xs:inline">New Suggestion</span>
-                <span className="xs:hidden font-extrabold">NEW</span>
+                <Twitter className="w-6 h-6 sm:w-7 sm:h-7" />
+                <span className="font-semibold">Twitter</span>
+              </button>
+
+              {/* Twitch */}
+              <button
+                onClick={openTwitch}
+                className="flex flex-col items-center gap-2 px-6 py-4 bg-purple-50/80 hover:bg-purple-100/90 text-purple-600 hover:text-purple-700 rounded-xl transition-all duration-200 font-medium text-sm sm:text-base shadow-sm hover:shadow-md min-w-[80px] sm:min-w-[100px] backdrop-blur-sm"
+                title="Follow us on Twitch"
+              >
+                <Twitch className="w-6 h-6 sm:w-7 sm:h-7" />
+                <span className="font-semibold">Twitch</span>
+              </button>
+
+              {/* Market Chart */}
+              <button
+                onClick={openDexScreener}
+                className="flex flex-col items-center gap-2 px-6 py-4 bg-green-50/80 hover:bg-green-100/90 text-green-600 hover:text-green-700 rounded-xl transition-all duration-200 font-medium text-sm sm:text-base shadow-sm hover:shadow-md min-w-[80px] sm:min-w-[100px] backdrop-blur-sm"
+                title="View Market Chart"
+              >
+                <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7" />
+                <span className="font-semibold">Chart</span>
+              </button>
+
+              {/* Wallet Copy */}
+              <button
+                onClick={copyWallet}
+                className="flex flex-col items-center gap-2 px-6 py-4 bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 hover:text-gray-800 rounded-xl transition-all duration-200 font-mono text-sm sm:text-base shadow-sm hover:shadow-md min-w-[80px] sm:min-w-[100px] backdrop-blur-sm"
+                title="Copy wallet address"
+              >
+                {copied ? (
+                  <Check className="w-6 h-6 sm:w-7 sm:h-7 text-green-600" />
+                ) : (
+                  <Copy className="w-6 h-6 sm:w-7 sm:h-7" />
+                )}
+                <span className="font-semibold">Wallet</span>
               </button>
             </div>
           </div>
+        </header>
 
-          {/* Social Links & Wallet Section */}
-          <div className="flex items-center justify-center gap-4 sm:gap-6 py-4 sm:py-6 border-t border-gray-100">
-            {/* Twitter */}
-            <button
-              onClick={openTwitter}
-              className="flex flex-col items-center gap-2 px-6 py-4 bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 rounded-xl transition-all duration-200 font-medium text-sm sm:text-base shadow-sm hover:shadow-md min-w-[80px] sm:min-w-[100px]"
-              title="Follow us on Twitter"
-            >
-              <Twitter className="w-6 h-6 sm:w-7 sm:h-7" />
-              <span className="font-semibold">Twitter</span>
-            </button>
-            
-            {/* Twitch */}
-            <button
-              onClick={openTwitch}
-              className="flex flex-col items-center gap-2 px-6 py-4 bg-purple-50 hover:bg-purple-100 text-purple-600 hover:text-purple-700 rounded-xl transition-all duration-200 font-medium text-sm sm:text-base shadow-sm hover:shadow-md min-w-[80px] sm:min-w-[100px]"
-              title="Follow us on Twitch"
-            >
-              <Twitch className="w-6 h-6 sm:w-7 sm:h-7" />
-              <span className="font-semibold">Twitch</span>
-            </button>
+        <div className="max-w-screen-xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-6 lg:py-8">
+          {/* Firebase Test */}
+          {showFirebaseTest && (
+            <div className="mb-8">
+              <FirebaseTest />
+            </div>
+          )}
 
-            {/* Wallet Copy */}
-            <button
-              onClick={copyWallet}
-              className="flex flex-col items-center gap-2 px-6 py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 rounded-xl transition-all duration-200 font-mono text-sm sm:text-base shadow-sm hover:shadow-md min-w-[80px] sm:min-w-[100px]"
-              title="Copy wallet address"
-            >
-              {copied ? (
-                <Check className="w-6 h-6 sm:w-7 sm:h-7 text-green-600" />
-              ) : (
-                <Copy className="w-6 h-6 sm:w-7 sm:h-7" />
+          {/* Stats - Enhanced Metric Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="metric-card metric-card-blue text-center bg-white/90 backdrop-blur-sm">
+              <div className="text-sm text-gray-500 mb-1">Total Suggestions</div>
+              <div className="text-2xl font-bold text-gray-800">{totalSuggestions}</div>
+            </div>
+
+            <div className="metric-card metric-card-yellow text-center bg-white/90 backdrop-blur-sm">
+              <div className="text-sm text-gray-500 mb-1">Pending</div>
+              <div className="text-2xl font-bold text-gray-800">{pendingSuggestions}</div>
+            </div>
+
+            <div className="metric-card metric-card-green text-center bg-white/90 backdrop-blur-sm">
+              <div className="text-sm text-gray-500 mb-1">Accepted</div>
+              <div className="text-2xl font-bold text-gray-800">{acceptedSuggestions}</div>
+            </div>
+
+            <div className="metric-card metric-card-red text-center bg-white/90 backdrop-blur-sm">
+              <div className="text-sm text-gray-500 mb-1">Total Likes</div>
+              <div className="text-2xl font-bold text-gray-800">{totalLikes}</div>
+            </div>
+          </div>
+
+          {/* Controls and Filters Reorganized */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-4">
+              <ViewSwitcher viewMode={viewMode} onViewChange={setViewMode} />
+
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <Filter className="w-4 h-4" />
+                <span>Filters:</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-gray-600">
+                {filteredSuggestions.length} of {totalSuggestions} suggestions
+              </span>
+            </div>
+          </div>
+
+          {/* Filters and Order Buttons Grouped */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6 p-4 bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100/50">
+            {/* Filters */}
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700">Status:</label>
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className="input-field text-sm bg-white/80 backdrop-blur-sm"
+                >
+                  <option value="all">All</option>
+                  <option value="pending">Pending</option>
+                  <option value="accepted">Accepted</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700">Category:</label>
+                <select
+                  value={filterCategory}
+                  onChange={(e) => setFilterCategory(e.target.value)}
+                  className="input-field text-sm bg-white/80 backdrop-blur-sm"
+                >
+                  <option value="all">All</option>
+                  <option value="improvement">Improvement</option>
+                  <option value="bug">Bug Fix</option>
+                  <option value="feature">New Feature</option>
+                  <option value="design">Design/UX</option>
+                  <option value="performance">Performance</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Order Buttons */}
+            <OrderButtons
+              currentOrder={orderType}
+              onOrderChange={setOrderType}
+            />
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div className="bg-red-50/90 backdrop-blur-sm border border-red-200/50 text-red-700 px-4 py-3 rounded-xl mb-6">
+              {error}
+            </div>
+          )}
+
+          {/* Suggestions List */}
+          {filteredSuggestions.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-gray-400 mb-4">
+                <TrendingUp className="w-16 h-16 mx-auto" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No suggestions found
+              </h3>
+              <p className="text-gray-600 mb-4">
+                {suggestions.length === 0
+                  ? 'Be the first to make a suggestion!'
+                  : 'Try adjusting the filters to see more suggestions.'
+                }
+              </p>
+              {suggestions.length === 0 && (
+                <button
+                  onClick={() => setIsFormOpen(true)}
+                  className="btn-primary"
+                >
+                  Create First Suggestion
+                </button>
               )}
-              <span className="font-semibold">Wallet</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-screen-xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-6 lg:py-8">
-        {/* Firebase Test */}
-        {showFirebaseTest && (
-          <div className="mb-8">
-            <FirebaseTest />
-          </div>
-        )}
-
-        {/* Stats - Enhanced Metric Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="metric-card metric-card-blue text-center">
-            <div className="text-sm text-gray-500 mb-1">Total Suggestions</div>
-            <div className="text-2xl font-bold text-gray-800">{totalSuggestions}</div>
-          </div>
-          
-          <div className="metric-card metric-card-yellow text-center">
-            <div className="text-sm text-gray-500 mb-1">Pending</div>
-            <div className="text-2xl font-bold text-gray-800">{pendingSuggestions}</div>
-          </div>
-          
-          <div className="metric-card metric-card-green text-center">
-            <div className="text-sm text-gray-500 mb-1">Accepted</div>
-            <div className="text-2xl font-bold text-gray-800">{acceptedSuggestions}</div>
-          </div>
-          
-          <div className="metric-card metric-card-red text-center">
-            <div className="text-sm text-gray-500 mb-1">Total Likes</div>
-            <div className="text-2xl font-bold text-gray-800">{totalLikes}</div>
-          </div>
+            </div>
+          ) : (
+            <div className={
+              viewMode === 'cards'
+                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                : 'space-y-4'
+            }>
+              {filteredSuggestions.map((suggestion) => (
+                viewMode === 'cards' ? (
+                  <SuggestionCard
+                    key={suggestion.id}
+                    suggestion={suggestion}
+                    onLike={handleLike}
+                  />
+                ) : (
+                  <ForumTopic
+                    key={suggestion.id}
+                    suggestion={suggestion}
+                    onLike={handleLike}
+                  />
+                )
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Controls and Filters Reorganized */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-4">
-            <ViewSwitcher viewMode={viewMode} onViewChange={setViewMode} />
+        {/* Market Chart - Only shown when button is clicked */}
+        {/* This section is removed as per the edit hint */}
+
+        {/* Form Modal */}
+        <SuggestionForm
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          onSubmit={handleFormSubmit}
+        />
+
+        {/* Toast Notifications */}
+        <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
+
+        {/* Footer */}
+        <footer className="bg-white/90 backdrop-blur-sm border-t border-gray-200/50 mt-16">
+          <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <img src='./bonkputer.webp' alt='Bonkputer Logo' className='w-12 h-12 sm:w-14 sm:h-14 rounded-full' />
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+                  Share the Bonkputer Experience
+                </h3>
+              </div>
+              <p className="text-gray-600 mb-8 text-lg sm:text-xl max-w-2xl mx-auto">
+                Help us grow our community! Share this amazing platform with your friends and let them discover the power of collaborative innovation. 🚀
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button
+                  onClick={shareOnTwitter}
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-3 text-lg"
+                >
+                  <Twitter className="w-6 h-6" />
+                  <span>Share on Twitter</span>
+                </button>
+                <button
+                  onClick={openTwitter}
+                  className="bg-gray-100/80 hover:bg-gray-200/90 text-gray-700 font-semibold py-4 px-8 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center gap-3 text-lg backdrop-blur-sm"
+                >
+                  <Twitter className="w-6 h-6" />
+                  <span>Follow on X</span>
+                </button>
+              </div>
+            </div>
             
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Filter className="w-4 h-4" />
-              <span>Filters:</span>
+            <div className="mt-8 pt-8 border-t border-gray-200/50">
+              <p className="text-sm text-gray-500">
+                © 2025 Bonkputer SuggestionFlow. Made with ❤️ for the community.
+              </p>
             </div>
           </div>
-
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-gray-600">
-              {filteredSuggestions.length} of {totalSuggestions} suggestions
-            </span>
-          </div>
-        </div>
-
-        {/* Filters and Order Buttons Grouped */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-6 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
-          {/* Filters */}
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Status:</label>
-              <select
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="input-field text-sm"
-              >
-                <option value="all">All</option>
-                <option value="pending">Pending</option>
-                <option value="accepted">Accepted</option>
-                <option value="rejected">Rejected</option>
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-gray-700">Category:</label>
-              <select
-                value={filterCategory}
-                onChange={(e) => setFilterCategory(e.target.value)}
-                className="input-field text-sm"
-              >
-                <option value="all">All</option>
-                <option value="improvement">Improvement</option>
-                <option value="bug">Bug Fix</option>
-                <option value="feature">New Feature</option>
-                <option value="design">Design/UX</option>
-                <option value="performance">Performance</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Order Buttons */}
-          <OrderButtons 
-            currentOrder={orderType} 
-            onOrderChange={setOrderType} 
-          />
-        </div>
-
-        {/* Error */}
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6">
-            {error}
-          </div>
-        )}
-
-        {/* Suggestions List */}
-        {filteredSuggestions.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
-              <TrendingUp className="w-16 h-16 mx-auto" />
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              No suggestions found
-            </h3>
-            <p className="text-gray-600 mb-4">
-              {suggestions.length === 0 
-                ? 'Be the first to make a suggestion!'
-                : 'Try adjusting the filters to see more suggestions.'
-              }
-            </p>
-            {suggestions.length === 0 && (
-              <button
-                onClick={() => setIsFormOpen(true)}
-                className="btn-primary"
-              >
-                Create First Suggestion
-              </button>
-            )}
-          </div>
-        ) : (
-          <div className={
-            viewMode === 'cards' 
-              ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-              : 'space-y-4'
-          }>
-            {filteredSuggestions.map((suggestion) => (
-              viewMode === 'cards' ? (
-                <SuggestionCard
-                  key={suggestion.id}
-                  suggestion={suggestion}
-                  onLike={handleLike}
-                />
-              ) : (
-                <ForumTopic
-                  key={suggestion.id}
-                  suggestion={suggestion}
-                  onLike={handleLike}
-                />
-              )
-            ))}
-          </div>
-        )}
+        </footer>
       </div>
-
-      {/* Form Modal */}
-      <SuggestionForm
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        onSubmit={handleFormSubmit}
-      />
-
-      {/* Toast Notifications */}
-      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
     </div>
   );
 };
